@@ -16,6 +16,8 @@ DFeditGUI::DFeditGUI(QWidget* parent)
     QWidget* centralWidget = new QWidget;
     centralWidget->setLayout(layout);
     setCentralWidget(centralWidget);
+
+    resize(900, 600);
     
     setWindowTitle(tr("Dragon Force Editor"));
 }
