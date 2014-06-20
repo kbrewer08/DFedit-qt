@@ -1,5 +1,5 @@
-#include "dfeditgui.h"
 #include <QApplication>
+#include "DFeditGUI.h"
 
 int main(int argc, char *argv[])
 {
