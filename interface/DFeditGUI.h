@@ -7,6 +7,7 @@
 #include "DivisionsTab.h"
 #include "MassEditTab.h"
 #include "KingdomsTab.h"
+#include "ItemsTab.h"
 
 class DFeditGUI : public QMainWindow
 {
@@ -14,10 +15,12 @@ class DFeditGUI : public QMainWindow
 
 public:
     DFeditGUI(QWidget* parent = 0);
-    ~DFeditGUI();
+    ~DFeditGUI(void);
 
 private:
     QTabWidget* parentTab;
+    
+    void createMenuBar(void);
 };
 
 #endif // DFEDITGUI_H
