@@ -10,6 +10,7 @@ DFeditGUI::DFeditGUI(QWidget* parent)
     parentTab->addTab(new MassEditTab(),  tr("Mass Editing"));
     parentTab->addTab(new KingdomsTab(),  tr("Kingdoms"));
     parentTab->addTab(new ItemsTab(),     tr("Items"));
+    parentTab->setTabsClosable(false);
 
     QGridLayout* layout = new QGridLayout;
     layout->addWidget(parentTab);
