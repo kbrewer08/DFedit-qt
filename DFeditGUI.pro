@@ -20,7 +20,8 @@ SOURCES += \
     interface/KingdomsTab.cpp \
     interface/MassEditTab.cpp \
     interface/DFeditGUI.cpp \
-    interface/ItemsTab.cpp
+    interface/ItemsTab.cpp \
+    interface/MainContentHolder.cpp
 
 HEADERS  += \
     interface/CastlesTab.h \
@@ -29,4 +30,5 @@ HEADERS  += \
     interface/KingdomsTab.h \
     interface/MassEditTab.h \
     interface/DFeditGUI.h \
-    interface/ItemsTab.h
+    interface/ItemsTab.h \
+    interface/MainContentHolder.h

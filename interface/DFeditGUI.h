@@ -9,7 +9,7 @@
 #include "KingdomsTab.h"
 #include "ItemsTab.h"
 
-class DFeditGUI : public QMainWindow
+class DFeditGUI : public QWidget
 {
     Q_OBJECT
 
@@ -18,10 +18,8 @@ public:
     ~DFeditGUI(void);
 
 private:
-    QTabWidget* parentTab;
-    
-    void createMenuBar(void);
+    QTabWidget*  dfTab;
+    QGridLayout* layout;
 };
 
 #endif // DFEDITGUI_H
-

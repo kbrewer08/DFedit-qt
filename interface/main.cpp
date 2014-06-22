@@ -1,11 +1,11 @@
 #include <QApplication>
-#include "DFeditGUI.h"
+#include "MainContentHolder.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    DFeditGUI dfe;
-    dfe.show();
+    MainContentHolder mch;
+    mch.show();
 
     return a.exec();
 }
