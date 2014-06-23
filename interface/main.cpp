@@ -7,5 +7,7 @@ int main(int argc, char *argv[])
     MainContentHolder mch;
     mch.show();
 
+    QWidget* x = mch.mainTab->widget(0);
+    
     return a.exec();
 }
