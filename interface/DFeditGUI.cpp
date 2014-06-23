@@ -14,6 +14,7 @@ DFeditGUI::DFeditGUI(QWidget* parent)
 
     layout = new QGridLayout;
     layout->addWidget(dfTab);
+    this->setLayout(layout);
 }
 
 DFeditGUI::~DFeditGUI(void)

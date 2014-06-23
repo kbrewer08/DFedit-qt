@@ -13,7 +13,7 @@ public:
     MainContentHolder(QWidget* parent = 0);
     ~MainContentHolder(void);
 
-//private:
+private:
     QTabWidget* mainTab;
     
     void createMenuBar(void);

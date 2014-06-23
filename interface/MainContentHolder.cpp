@@ -8,12 +8,12 @@ MainContentHolder::MainContentHolder(QWidget* parent)
     mainTab->addTab(new DFeditGUI(), tr("DR_FORCE_01"));
     mainTab->setTabsClosable(false);
     
-//    QGridLayout* layout = new QGridLayout;
-//    layout->addWidget(mainTab);
+    QGridLayout* layout = new QGridLayout;
+    layout->addWidget(mainTab);
 
-//    QWidget* centralWidget = new QWidget;
-//    centralWidget->setLayout(layout);
-    setCentralWidget(mainTab);
+    QWidget* centralWidget = new QWidget;
+    centralWidget->setLayout(layout);
+    setCentralWidget(centralWidget);
     createMenuBar();
 
     resize(900, 600);
