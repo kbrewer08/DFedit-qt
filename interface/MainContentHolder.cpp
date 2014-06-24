@@ -6,7 +6,7 @@ MainContentHolder::MainContentHolder(QWidget* parent)
 {
     mainTab = new QTabWidget;
     mainTab->addTab(new DFeditGUI(), tr("DR_FORCE_01"));
-    mainTab->setTabsClosable(false);
+    mainTab->setMovable(true);
     
     QGridLayout* layout = new QGridLayout;
     layout->addWidget(mainTab);
@@ -26,6 +26,12 @@ MainContentHolder::MainContentHolder(QWidget* parent)
 MainContentHolder::~MainContentHolder(void)
 {
     
+}
+
+void MainContentHolder::addNewTab(const char* tabName)
+{
+    mainTab->addTab(new DFeditGUI(), tr(tabName));
+    mainTab->setTabsClosable(true);
 }
 
 void MainContentHolder::createMenuBar(void)

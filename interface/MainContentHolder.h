@@ -13,6 +13,8 @@ public:
     MainContentHolder(QWidget* parent = 0);
     ~MainContentHolder(void);
 
+    void addNewTab(const char* tabName);
+    
 private:
     QTabWidget* mainTab;
     
