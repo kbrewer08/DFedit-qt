@@ -23,6 +23,7 @@ private slots:
     void    reloadTab   (void);
 
 private:
+    bool        isBlank;
     QTabWidget* mainTab;
     
     void createMenuBar(void);

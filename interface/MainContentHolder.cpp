@@ -36,8 +36,9 @@ void MainContentHolder::addNewTab(QString inFile)
     }
 
     //if blank tab open, close it, so real one can be opened
-    if(mainTab->count() == 1){
+    if((mainTab->count() == 1) && isBlank){
         mainTab->removeTab(0);
+        isBlank = false;
     }
 
     mainTab->addTab(new DFeditGUI(inFile), tr(""));            //can't set tab name yet
@@ -59,11 +60,11 @@ std::string MainContentHolder::getDfeVersion(void)
 void MainContentHolder::createMenuBar(void)
 {
 
-    QMenu* fileMenu  = menuBar()->addMenu(tr("&File"));
+    QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(tr("&Open a save file..."), this, SLOT(openFile()), QKeySequence(tr("Ctrl+O")));
     fileMenu->addAction(tr("&Quit"), this, SLOT(close()), QKeySequence(tr("Ctrl+Q")));
     fileMenu->addAction(tr("&Reload"), this, SLOT(reloadTab()), QKeySequence(tr("Ctrl+R")));
-
+    
     QAction* aboutAction = new QAction(tr("A&bout"), this);
 
     QMenu* aboutMenu = menuBar()->addMenu(tr("&About"));
@@ -110,6 +111,7 @@ void MainContentHolder::closeTab(int tabNumber)
     if(!mainTab->count()){ //when last tab closed, reopen a blank one
         mainTab->addTab(new DFeditGUI(""), tr("No files open"));
         mainTab->setTabsClosable(false);
+        isBlank = true;
     }
 
     return;
