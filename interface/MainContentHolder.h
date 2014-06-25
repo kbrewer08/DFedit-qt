@@ -13,8 +13,13 @@ public:
     MainContentHolder(QWidget* parent = 0);
     ~MainContentHolder(void);
 
-    void addNewTab(const char* tabName);
+    void        addNewTab     (QString inFile);
+    std::string getDfeVersion (void);
     
+private slots:
+    QString openFile    (void);
+    void    aboutDFedit (void);
+
 private:
     QTabWidget* mainTab;
     

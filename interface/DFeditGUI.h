@@ -14,12 +14,13 @@ class DFeditGUI : public QWidget
     Q_OBJECT
 
 public:
-    DFeditGUI(QWidget* parent = 0);
+    DFeditGUI(QString inFile, QWidget* parent = 0);
     ~DFeditGUI(void);
 
 private:
     QTabWidget*  dfTab;
     QGridLayout* layout;
+    QString      fileName;
 };
 
 #endif // DFEDITGUI_H

@@ -1,6 +1,6 @@
 #include "DFeditGUI.h"
 
-DFeditGUI::DFeditGUI(QWidget* parent)
+DFeditGUI::DFeditGUI(QString inFile, QWidget* parent)
     : QWidget(parent)
 {
     dfTab = new QTabWidget;
