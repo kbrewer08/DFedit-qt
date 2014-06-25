@@ -7,7 +7,10 @@ MainContentHolder::MainContentHolder(QWidget* parent)
     mainTab = new QTabWidget;
     mainTab->addTab(new DFeditGUI(""), tr("DR_FORCE_01"));
     mainTab->setMovable(true);
-    
+
+    //closing tabs will only work if more than 1 is open    
+    connect(mainTab, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
+
     QGridLayout* layout = new QGridLayout;
     layout->addWidget(mainTab);
 
@@ -29,9 +32,18 @@ MainContentHolder::~MainContentHolder(void)
 void MainContentHolder::addNewTab(QString inFile)
 {
     const char* tabName = "";
-    
+
+    if(inFile == NULL){
+        return;
+    }
+
     mainTab->addTab(new DFeditGUI(inFile), tr(tabName));
     mainTab->setTabsClosable(true);
+    
+    mainTab->setTabText(mainTab->count() - 1, "New Tab text");
+    mainTab->setCurrentIndex(mainTab->count() - 1);
+
+    return;
 }
 
 std::string MainContentHolder::getDfeVersion(void)
@@ -44,27 +56,19 @@ std::string MainContentHolder::getDfeVersion(void)
 
 void MainContentHolder::createMenuBar(void)
 {
-    QAction*   openAction   = new QAction(tr("&Open a save file..."), this);
-    QShortcut* openShortCut = new QShortcut(QKeySequence("Ctrl+O"), this);
-    QAction*   quitAction   = new QAction(tr("&Quit"), this);
-    QShortcut* quitShortCut = new QShortcut(QKeySequence("Ctrl+Q"), this);
 
-    QAction* aboutAction = new QAction(tr("A&bout"), this);
-    
     QMenu* fileMenu  = menuBar()->addMenu(tr("&File"));
-    fileMenu->addAction(openAction);
-    fileMenu->addAction(quitAction);
+    fileMenu->addAction(tr("&Open a save file..."), this, SLOT(openFile()), QKeySequence(tr("Ctrl+O")));
+    fileMenu->addAction(tr("&Quit"), this, SLOT(close()), QKeySequence(tr("Ctrl+Q")));
     
-    connect(openAction, SIGNAL(triggered(bool)), this, SLOT(openFile(void)));
-    connect(openShortCut, SIGNAL(activated()), this, SLOT(openFile(void)));
-    connect(quitAction, SIGNAL(triggered(bool)), this, SLOT(close(void)));
-    connect(quitShortCut, SIGNAL(activated()), this, SLOT(close(void)));
-    
+    QAction* aboutAction = new QAction(tr("A&bout"), this);
+
     QMenu* aboutMenu = menuBar()->addMenu(tr("&About"));
     aboutMenu->addAction(aboutAction);
 
     connect(aboutAction, SIGNAL(triggered(bool)), this, SLOT(aboutDFedit()));
 
+    return;
 }
 
 QString MainContentHolder::openFile(void)
@@ -93,4 +97,19 @@ void MainContentHolder::aboutDFedit(void)
                           "files that it works with are those created by the SSF emulator "
                           "with the Hook Backup Library option checked.</p>"
                           ));
+
+    return;
+}
+
+void MainContentHolder::closeTab(int tabNumber)
+{
+    if(mainTab->count() < 2){
+        return;
+    }
+    mainTab->removeTab(tabNumber);
+    if(mainTab->count() == 1){
+        mainTab->setTabsClosable(false);
+    }
+
+    return;
 }

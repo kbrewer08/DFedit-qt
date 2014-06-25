@@ -19,6 +19,7 @@ public:
 private slots:
     QString openFile    (void);
     void    aboutDFedit (void);
+    void    closeTab    (int tabNumber);
 
 private:
     QTabWidget* mainTab;
