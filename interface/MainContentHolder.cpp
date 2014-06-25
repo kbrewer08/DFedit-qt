@@ -59,12 +59,12 @@ std::string MainContentHolder::getDfeVersion(void)
 
 void MainContentHolder::createMenuBar(void)
 {
-
     QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(tr("&Open a save file..."), this, SLOT(openFile()), QKeySequence(tr("Ctrl+O")));
-    fileMenu->addAction(tr("&Quit"), this, SLOT(close()), QKeySequence(tr("Ctrl+Q")));
     fileMenu->addAction(tr("&Reload"), this, SLOT(reloadTab()), QKeySequence(tr("Ctrl+R")));
-    
+    fileMenu->addSeparator();
+    fileMenu->addAction(tr("&Quit"), this, SLOT(close()), QKeySequence(tr("Ctrl+Q")));
+
     QAction* aboutAction = new QAction(tr("A&bout"), this);
 
     QMenu* aboutMenu = menuBar()->addMenu(tr("&About"));
