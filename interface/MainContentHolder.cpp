@@ -5,7 +5,7 @@ MainContentHolder::MainContentHolder(QWidget* parent)
     : QMainWindow(parent)
 {
     mainTab = new QTabWidget;
-    mainTab->addTab(new DFeditGUI(""), tr("DR_FORCE_01"));
+    mainTab->addTab(new DFeditGUI(""), tr("No files open"));
     mainTab->setMovable(true);
 
     //closing tabs will only work if more than 1 is open    
@@ -26,22 +26,24 @@ MainContentHolder::MainContentHolder(QWidget* parent)
 
 MainContentHolder::~MainContentHolder(void)
 {
-    
+
 }
 
 void MainContentHolder::addNewTab(QString inFile)
 {
-    const char* tabName = "";
-
     if(inFile == NULL){
         return;
     }
 
-    mainTab->addTab(new DFeditGUI(inFile), tr(tabName));
-    mainTab->setTabsClosable(true);
-    
-    mainTab->setTabText(mainTab->count() - 1, "New Tab text");
-    mainTab->setCurrentIndex(mainTab->count() - 1);
+    //if blank tab open, close it, so real one can be opened
+    if(mainTab->count() == 1){
+        mainTab->removeTab(0);
+    }
+
+    mainTab->addTab(new DFeditGUI(inFile), tr(""));            //can't set tab name yet
+    mainTab->setTabText(mainTab->count() - 1, "New Tab text"); //save file loaded, set tab name now
+    mainTab->setCurrentIndex(mainTab->count() - 1);            //select the new tab/file
+    mainTab->setTabsClosable(true);                            //real file open, set tabs closable
 
     return;
 }
@@ -60,7 +62,8 @@ void MainContentHolder::createMenuBar(void)
     QMenu* fileMenu  = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(tr("&Open a save file..."), this, SLOT(openFile()), QKeySequence(tr("Ctrl+O")));
     fileMenu->addAction(tr("&Quit"), this, SLOT(close()), QKeySequence(tr("Ctrl+Q")));
-    
+    fileMenu->addAction(tr("&Reload"), this, SLOT(reloadTab()), QKeySequence(tr("Ctrl+R")));
+
     QAction* aboutAction = new QAction(tr("A&bout"), this);
 
     QMenu* aboutMenu = menuBar()->addMenu(tr("&About"));
@@ -103,13 +106,18 @@ void MainContentHolder::aboutDFedit(void)
 
 void MainContentHolder::closeTab(int tabNumber)
 {
-    if(mainTab->count() < 2){
-        return;
-    }
     mainTab->removeTab(tabNumber);
-    if(mainTab->count() == 1){
+    if(!mainTab->count()){ //when last tab closed, reopen a blank one
+        mainTab->addTab(new DFeditGUI(""), tr("No files open"));
         mainTab->setTabsClosable(false);
     }
+
+    return;
+}
+
+void MainContentHolder::reloadTab(void)
+{
+    QMessageBox::about(this, "Reload action", "The reload button works.");
 
     return;
 }
