@@ -21,7 +21,13 @@ SOURCES += \
     interface/MassEditTab.cpp \
     interface/DFeditGUI.cpp \
     interface/ItemsTab.cpp \
-    interface/MainContentHolder.cpp
+    interface/MainContentHolder.cpp \
+    implementation/Castle.cpp \
+    implementation/Division.cpp \
+    implementation/DragonForce.cpp \
+    implementation/FileReader.cpp \
+    implementation/FileWriter.cpp \
+    implementation/General.cpp
 
 HEADERS  += \
     interface/CastlesTab.h \
@@ -31,4 +37,10 @@ HEADERS  += \
     interface/MassEditTab.h \
     interface/DFeditGUI.h \
     interface/ItemsTab.h \
-    interface/MainContentHolder.h
+    interface/MainContentHolder.h \
+    implementation/Castle.h \
+    implementation/Division.h \
+    implementation/DragonForce.h \
+    implementation/FileReader.h \
+    implementation/FileWriter.h \
+    implementation/General.h
