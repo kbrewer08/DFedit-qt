@@ -16,7 +16,7 @@ General::General(int i)
         fixedLocation = 0; //they are part of an army
     location          = locationNumBuff[i] & 0x00FF; //only the low byte is important here
     troopIndex        = troopTypeBuff[i];
-    troopType         = troopType[troopTypeBuff[i]];
+    troopClass        = troopType[troopTypeBuff[i]];
     currentTroopCount = currTroopCountBuff[i];
     nAction           = nActionBuff[i];
     bAction           = bActionBuff[i];
@@ -94,7 +94,7 @@ General::General(const General& rhsGen)
     fixedLocation     = rhsGen.fixedLocation;
     location          = rhsGen.location;
     troopIndex        = rhsGen.troopIndex;
-    troopType         = rhsGen.troopType;
+    troopClass        = rhsGen.troopClass;
     currentTroopCount = rhsGen.currentTroopCount;
     nAction           = rhsGen.nAction;
     bAction           = rhsGen.bAction;
@@ -162,7 +162,7 @@ General& General::operator=(const General& rhsGen)
     fixedLocation     = rhsGen.fixedLocation;
     location          = rhsGen.location;
     troopIndex        = rhsGen.troopIndex;
-    troopType         = rhsGen.troopType;
+    troopClass        = rhsGen.troopClass;
     currentTroopCount = rhsGen.currentTroopCount;
     nAction           = rhsGen.nAction;
     bAction           = rhsGen.bAction;
@@ -319,7 +319,7 @@ int General::editMedals(ushort newMedalCount, int troopTypeToChange, ushort* pac
         if(troopIndex == troopTypeToChange)
         {
             dr.fw.writeOneElementToFile(GEN_TROOP_TYPE, 1, 0, listIndex);
-            troopType = troopType[0];
+            troopClass = troopType[0];
             troopIndex = 0;
             troopTypeBuff[listIndex] = 0;
         }

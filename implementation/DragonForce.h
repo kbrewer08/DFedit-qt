@@ -252,6 +252,7 @@ class DragonForce
 {
 public:
     string drFileName;
+    string playerName;
     int    playingAs;
     bool   bigEndian;
 
@@ -266,7 +267,7 @@ public:
     ITEM_INVENT itemInv;
 
     CAPTIVE_HOLDER capHolder;
-    
+
     DragonForce (void) : drFileName(""), playingAs(-1), genArr(), casArr(), divArr(), kingdoms(), itemInv(), capHolder() {}
     DragonForce (char savefileName[]) : drFileName(savefileName), fr(savefileName) {}
     ~DragonForce(void) {}
@@ -274,8 +275,10 @@ public:
     DragonForce(const DragonForce& rhsDF);
     DragonForce& operator=(const DragonForce& rhsDF);
 
+    bool   isBigEndian   (void) const {return bigEndian;}
+    string getPlayerName (void) const {return playerName;}
+
     void setBigEndian  (bool isBigEndian);
-    bool isBigEndian   (void) const {return bigEndian;}
     void setMonarch    (void);
     void initGenerals  (void);
     void initCastles   (void);

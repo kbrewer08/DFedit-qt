@@ -734,8 +734,10 @@ DragonForce::DragonForce(const DragonForce& rhsDF)
     int i;
     int j;
 
+    playerName = rhsDF.playerName;
     drFileName = rhsDF.drFileName;
     playingAs  = rhsDF.playingAs;
+    bigEndian  = rhsDF.bigEndian;
 
     for(i = 0; i < 171; i++)
     {
@@ -767,8 +769,10 @@ DragonForce& DragonForce::operator=(const DragonForce& rhsDF)
     if(this == &rhsDF)
         return *this;
 
+    playerName = rhsDF.playerName;
     drFileName = rhsDF.drFileName;
     playingAs  = rhsDF.playingAs;
+    bigEndian  = rhsDF.bigEndian;
 
     fr = rhsDF.fr;
     fw = rhsDF.fw;
@@ -800,6 +804,7 @@ void DragonForce::setMonarch(void)
 {
     playingAs = fr.findPlayingAs();
     genArr[playingAs].isPlayer = 1;
+    playerName = generalsNameList[playingAs];
     
     return;
 }

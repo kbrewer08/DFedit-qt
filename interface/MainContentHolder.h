@@ -2,6 +2,7 @@
 #define MAINCONTENTHOLDER_H
 
 #include "DFeditGUI.h"
+#include "implementation/DragonForce.h"
 
 #define DFEDIT_VERSION "2.5"
 

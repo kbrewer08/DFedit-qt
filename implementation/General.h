@@ -22,7 +22,7 @@ public:
     int    fixedLocation; //true/false 1/0
     int    location;
     int    troopIndex;
-    string troopType;
+    string troopClass;
     int    currentTroopCount;
     int    nAction;
     int    bAction;

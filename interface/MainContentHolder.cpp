@@ -7,6 +7,7 @@ MainContentHolder::MainContentHolder(QWidget* parent)
     mainTab = new QTabWidget;
     mainTab->addTab(new DFeditGUI(""), tr("No files open"));
     mainTab->setMovable(true);
+    isBlank = true;
 
     //closing tabs will only work if more than 1 is open    
     connect(mainTab, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
@@ -41,10 +42,11 @@ void MainContentHolder::addNewTab(QString inFile)
         isBlank = false;
     }
 
-    mainTab->addTab(new DFeditGUI(inFile), tr(""));            //can't set tab name yet
-    mainTab->setTabText(mainTab->count() - 1, "New Tab text"); //save file loaded, set tab name now
-    mainTab->setCurrentIndex(mainTab->count() - 1);            //select the new tab/file
-    mainTab->setTabsClosable(true);                            //real file open, set tabs closable
+    DFeditGUI* dfe = new DFeditGUI(inFile);
+    mainTab->addTab(dfe, tr(""));                                    //can't set tab name yet
+    mainTab->setTabText(mainTab->count() - 1, dfe->getPlayerName()); //save file loaded, set tab name now
+    mainTab->setCurrentIndex(mainTab->count() - 1);                  //select the new tab/file
+    mainTab->setTabsClosable(true);                                  //real file open, set tabs closable
 
     return;
 }
