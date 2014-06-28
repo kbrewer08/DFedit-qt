@@ -14,14 +14,14 @@ public:
     MainContentHolder(QWidget* parent = 0);
     ~MainContentHolder(void);
 
-    void        addNewTab     (QString inFile);
+    void        addNewTab     (QStringList inFile);
     std::string getDfeVersion (void);
     
 private slots:
-    QString openFile    (void);
-    void    aboutDFedit (void);
-    void    closeTab    (int tabNumber);
-    void    reloadTab   (void);
+    QStringList openFile    (void);
+    void        aboutDFedit (void);
+    void        closeTab    (int tabNumber);
+    void        reloadTab   (void);
 
 private:
     bool        isBlank;

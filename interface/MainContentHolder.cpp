@@ -30,23 +30,32 @@ MainContentHolder::~MainContentHolder(void)
 
 }
 
-void MainContentHolder::addNewTab(QString inFile)
+void MainContentHolder::addNewTab(QStringList inFiles)
 {
-    if(inFile == NULL){
+    if(inFiles.empty()){
         return;
     }
 
-    //if blank tab open, close it, so real one can be opened
-    if((mainTab->count() == 1) && isBlank){
-        mainTab->removeTab(0);
-        isBlank = false;
+    QStringListIterator i(inFiles);
+    while(i.hasNext()){
+        QString fileName = i.next();
+        QFile*  file     = new QFile(fileName);
+        if(file->size() == 18160){
+            if((mainTab->count() == 1) && isBlank){ //if blank tab open, close it, so real one can be opened
+                mainTab->removeTab(0);
+                isBlank = false;
+            }
+            DFeditGUI* dfe = new DFeditGUI(fileName);
+            mainTab->addTab(dfe, tr(""));                                    //can't set tab name yet
+            mainTab->setTabText(mainTab->count() - 1, dfe->getPlayerName()); //save file loaded, set tab name now
+            mainTab->setCurrentIndex(mainTab->count() - 1);                  //select the new tab/file
+            mainTab->setTabsClosable(true);                                  //real file open, set tabs closable
+            file->~QFile();
+        }
+        else{
+            file->~QFile();
+        }
     }
-
-    DFeditGUI* dfe = new DFeditGUI(inFile);
-    mainTab->addTab(dfe, tr(""));                                    //can't set tab name yet
-    mainTab->setTabText(mainTab->count() - 1, dfe->getPlayerName()); //save file loaded, set tab name now
-    mainTab->setCurrentIndex(mainTab->count() - 1);                  //select the new tab/file
-    mainTab->setTabsClosable(true);                                  //real file open, set tabs closable
 
     return;
 }
@@ -77,16 +86,16 @@ void MainContentHolder::createMenuBar(void)
     return;
 }
 
-QString MainContentHolder::openFile(void)
+QStringList MainContentHolder::openFile(void)
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
+    QStringList fileList = QFileDialog::getOpenFileNames(this,
                                                     tr("Open the SSF save file"),
                                                     "", // <-- this empty string means no specific directory is selected to be shown by default
                                                     tr(".bin files (*.bin);;All files (*.*)"));
 
-    addNewTab(fileName);
+    addNewTab(fileList);
 
-    return fileName;
+    return fileList;
 }
 
 void MainContentHolder::aboutDFedit(void)

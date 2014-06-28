@@ -15,6 +15,7 @@ DFeditGUI::DFeditGUI(QString inFile, QWidget* parent)
     layout->addWidget(dfTab);
 
     if(!inFile.isEmpty()){
+        fileName           = inFile;
         dr.drFileName      = inFile.toStdString();
         dr.fr.savefileName = inFile.toStdString();
         dr.fw.savefileName = inFile.toStdString();
