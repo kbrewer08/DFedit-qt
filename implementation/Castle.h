@@ -10,14 +10,16 @@ using namespace std;
 
 class Castle
 {
-public:
+private:
     int  castleNum;
     int  ruler;
     int  leader;
     int  numGenerals;
     int  numCaptives;
-    int  generals[10];
-    int  captives[171];
+public:
+    int  generals[10];  //find solution to set/get
+    int  captives[171]; //find solution to set/get
+private:
     int  xCoordinate;
     int  yCoordinate;
     bool hasPlayerRuler;
@@ -26,9 +28,9 @@ public:
     int  maxTroops;
     int  experience;
     int  expNext;
-    bool needsUpdate;
     string castleName;
 
+public:
 //constructors, destructors
     Castle  (void);
     ~Castle (void) {}
@@ -55,9 +57,23 @@ public:
     int  fromGenToCap        (int* const genBuff, const int genCount);
     bool fromCapToGen        (int* const capBuff, const int capCount);
 
-    bool hasPlayerMonarch (void) const {return hasPlayerRuler;}
     bool isCastleFull     (void) const {return numGenerals == 10;}
     bool isCastleEmpty    (void) const {return numGenerals == 0;}
+
+    int    getCastleNum     (void) const {return castleNum;}
+    int    getRuler         (void) const {return ruler;}
+    int    getLeader        (void) const {return leader;}
+    int    getNumGenerals   (void) const {return numGenerals;}
+    int    getNumCaptives   (void) const {return numCaptives;}
+    int    getXCoordinate   (void) const {return xCoordinate;}
+    int    getYCoordinate   (void) const {return yCoordinate;}
+    bool   hasPlayerMonarch (void) const {return hasPlayerRuler;}
+    int    getLevel         (void) const {return level;}
+    int    getTroopCount    (void) const {return troopCount;}
+    int    getMaxTroops     (void) const {return maxTroops;}
+    int    getExperience    (void) const {return experience;}
+    int    getExpNext       (void) const {return expNext;}
+    string getCastleName    (void) const {return castleName;}
 
     void setCastleNum   (const int i)      {castleNum = i; return;}
     void setRuler       (const int i)      {ruler = i; return;}

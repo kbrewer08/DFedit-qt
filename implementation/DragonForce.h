@@ -250,7 +250,7 @@ typedef struct //for Item Inventory
 
 class DragonForce
 {
-public:
+private:
     string drFileName;
     string playerName;
     int    playingAs;
@@ -268,23 +268,33 @@ public:
 
     CAPTIVE_HOLDER capHolder;
 
+public:
     DragonForce (void) : drFileName(""), playingAs(-1), genArr(), casArr(), divArr(), kingdoms(), itemInv(), capHolder() {}
-    DragonForce (char savefileName[]) : drFileName(savefileName), fr(savefileName) {}
+    DragonForce (char savefileName[]) : drFileName(savefileName), fr(savefileName), fw(savefileName){}
     ~DragonForce(void) {}
 
     DragonForce(const DragonForce& rhsDF);
     DragonForce& operator=(const DragonForce& rhsDF);
 
-    bool   isBigEndian   (void) const {return bigEndian;}
-    string getPlayerName (void) const {return playerName;}
-
-    void setBigEndian  (bool isBigEndian);
-    void setMonarch    (void);
+//init functions
     void initGenerals  (void);
     void initCastles   (void);
     void initDivisions (void);
     void initItemInv   (void);
     void initKingdoms  (void);
+
+//getters
+    bool   isBigEndian    (void)      const {return bigEndian;}
+    string getPlayerName  (void)      const {return playerName;}
+    string getGeneralName (int index) const {return generalsNameList[index];}
+
+//setters
+    void setBigEndian  (bool isBigEndian);
+    void setMonarch    (void);
+    void setFileName   (string fileName);
+
+//misc functions
+    void readFile      (void);
     void findActiveDiv (void);
     void findNewRulers (const int oldRuler);
     void addItemsInv   (const int* const items, const int count);

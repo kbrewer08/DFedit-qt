@@ -1091,3 +1091,19 @@ void DragonForce::insertionSort( int* const arr, const int size ) //standard ins
 
     return;
 }
+
+void DragonForce::setFileName(string fileName)
+{
+    drFileName = saveFileName;
+    fr = FileReader(fileName);
+    fw = FileWriter(fileName);
+
+    return;
+}
+
+void DragonForce::readFile(void)
+{
+    fr.readFile();
+
+    return;
+}

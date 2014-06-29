@@ -16,11 +16,9 @@ DFeditGUI::DFeditGUI(QString inFile, QWidget* parent)
 
     if(!inFile.isEmpty()){
         fileName           = inFile;
-        dr.drFileName      = inFile.toStdString();
-        dr.fr.savefileName = inFile.toStdString();
-        dr.fw.savefileName = inFile.toStdString();
+        dr.setFileName(inFile.toStdString());
 
-        dr.fr.readFile();   //read the save file
+        dr.readFile();      //read the save file
         dr.initGenerals();  //create the generals array
         dr.setMonarch();    //find who the player's monarch is
         dr.initCastles();   //create the castles array

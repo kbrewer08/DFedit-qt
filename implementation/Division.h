@@ -10,8 +10,7 @@ using namespace std;
 
 class Division
 {
-public:
-    
+private:
     int  ruler;
     int  leader;
     int  status;
@@ -20,8 +19,10 @@ public:
     int  numMembers;
     int  numCaptives;
     int  troopCount;
-    int  members[5];
-    int  captives[171];
+public:
+    int  members[5];    //need solution to get/set
+    int  captives[171]; //need solution to get/set
+private:
     int  origin;
     int  goal;
     int  prev;
@@ -29,6 +30,7 @@ public:
     int  xCoordinate;
     int  yCoordinate;
 
+public:
     Division  (void);
     ~Division (void) {}
 
@@ -42,6 +44,21 @@ public:
     void removeCaptive   (const int genIndex);
 
     bool isDivisionFull (void) {return numMembers == 5;}
+
+    int  getRuler         (void) const {return ruler;}
+    int  getLeader        (void) const {return leader;}
+    int  getStatus        (void) const {return status;}
+    int  getDivNum        (void) const {return divNum;}
+    bool hasPlayerMonarch (void) const {return hasPlayerRuler;}
+    int  getNumMembers    (void) const {return numMembers;}
+    int  getNumCaptives   (void) const {return numCaptives;}
+    int  getTroopCount    (void) const {return troopCount;}
+    int  getOrigin        (void) const {return origin;}
+    int  getGoal          (void) const {return goal;}
+    int  getPrev          (void) const {return prev;}
+    int  getNext          (void) const {return next;}
+    int  getXCoordinate   (void) const {return xCoordinate;}
+    int  getYCoordinate   (void) const {return yCoordinate;}
 
     void setRuler       (const int i)  {ruler = i; return;}
     void setLeader      (const int i)  {leader = i; return;}

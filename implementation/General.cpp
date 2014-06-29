@@ -3,7 +3,7 @@
 General::General(int i)
 {
     listIndex         = i;
-    isPlayer          = (listIndex == dr.playingAs) ? 1 : 0;
+    isPlayerMonarch   = (listIndex == df.getPlayingAs()) ? 1 : 0;
     name              = generalsNameList[i];
     owner             = generalsNameList[officerOwner[i]];
     fieldStatus1      = FsBuffer1[i];
@@ -16,7 +16,7 @@ General::General(int i)
         fixedLocation = 0; //they are part of an army
     location          = locationNumBuff[i] & 0x00FF; //only the low byte is important here
     troopIndex        = troopTypeBuff[i];
-    troopClass        = troopType[troopTypeBuff[i]];
+    troopType         = troopType[troopTypeBuff[i]];
     currentTroopCount = currTroopCountBuff[i];
     nAction           = nActionBuff[i];
     bAction           = bActionBuff[i];
@@ -77,14 +77,12 @@ General::General(int i)
     for(int j = 0; j < 11; j++)
         if(troopMedals[j] > 10)
             troopMedals[j] = 0;
-
-    needsUpdate = false;
 }
 
 General::General(const General& rhsGen)
 {
     listIndex         = rhsGen.listIndex;
-    isPlayer          = rhsGen.isPlayer;
+    isPlayerMonarch   = rhsGen.isPlayerMonarch;
     name              = rhsGen.name;
     owner             = rhsGen.owner;
     fieldStatus1      = rhsGen.fieldStatus1;
@@ -94,7 +92,7 @@ General::General(const General& rhsGen)
     fixedLocation     = rhsGen.fixedLocation;
     location          = rhsGen.location;
     troopIndex        = rhsGen.troopIndex;
-    troopClass        = rhsGen.troopClass;
+    troopType         = rhsGen.troopType;
     currentTroopCount = rhsGen.currentTroopCount;
     nAction           = rhsGen.nAction;
     bAction           = rhsGen.bAction;
@@ -142,8 +140,6 @@ General::General(const General& rhsGen)
 
     for(int i = 0; i < 11; i++)
         troopMedals[i] = rhsGen.troopMedals[i];
-
-    needsUpdate = rhsGen.needsUpdate;
 }
 
 General& General::operator=(const General& rhsGen)
@@ -152,7 +148,7 @@ General& General::operator=(const General& rhsGen)
         return *this;
 
     listIndex         = rhsGen.listIndex;
-    isPlayer          = rhsGen.isPlayer;
+    isPlayerMonarch   = rhsGen.isPlayerMonarch;
     name              = rhsGen.name;
     owner             = rhsGen.owner;
     fieldStatus1      = rhsGen.fieldStatus1;
@@ -162,7 +158,7 @@ General& General::operator=(const General& rhsGen)
     fixedLocation     = rhsGen.fixedLocation;
     location          = rhsGen.location;
     troopIndex        = rhsGen.troopIndex;
-    troopClass        = rhsGen.troopClass;
+    troopType         = rhsGen.troopType;
     currentTroopCount = rhsGen.currentTroopCount;
     nAction           = rhsGen.nAction;
     bAction           = rhsGen.bAction;
@@ -211,16 +207,14 @@ General& General::operator=(const General& rhsGen)
     for(int i = 0; i < 11; i++)
         troopMedals[i] = rhsGen.troopMedals[i];
 
-    needsUpdate = rhsGen.needsUpdate;
-
     return *this;
 }
 
 int General::changeGenOwner(const int newOwner)
 {
-    if(!isPlayer)
+    if(!isPlayerMonarch)
     {
-        if(dr.fw.writeGenOwner(newOwner, listIndex))
+        if(1/*df.fw.writeGenOwner(newOwner, listIndex)*/)
         {
             officerOwner[listIndex] = newOwner;
             return 1;
@@ -243,7 +237,7 @@ int General::editOneByteStat(const int min, const int max, const int newStat, co
         success = -1;
     else
     {
-        if(dr.fw.writeOneElementToFile(fileOffset, 1, ns, listIndex))
+        if(1/*df.fw.writeOneElementToFile(fileOffset, 1, ns, listIndex)*/)
         {
             if(statBuffer == levelBuffer) //I forget why this is necessary, need to investigate ---> UPDATE; apparently because I subtract by one in the function call for some reason...
                 ns++;
@@ -266,7 +260,7 @@ int General::editTwoByteStat(const int min, const int max, const int newStat, co
         success = -1;
     else
     {
-        if(dr.fw.writeOneElementToFile(fileOffset, 2, newStat, listIndex))
+        if(1/*df.fw.writeOneElementToFile(fileOffset, 2, newStat, listIndex)*/)
         {
             *stat = newStat;
             statBuffer[listIndex] = (ushort)newStat;
@@ -303,29 +297,29 @@ int General::editMedals(ushort newMedalCount, int troopTypeToChange, ushort* pac
 
 //packing two pieces of information into one byte
     if(nibbleToChange == 1)
-        newPackedMedalByte = dr.packByte(highNibble, newMedalCount);
+        newPackedMedalByte = g_packByte(highNibble, newMedalCount);
     if(nibbleToChange == 2)
-        newPackedMedalByte = dr.packByte(newMedalCount, lowNibble);
+        newPackedMedalByte = g_packByte(newMedalCount, lowNibble);
 //if the medals are set to zero, pack -1 (hex F) into that portion of the byte, since that's what the game uses for "non-existent"
     if(!newMedalCount)
     {
         newMedalCount = 15;
         if(nibbleToChange == 1)
-            newPackedMedalByte = dr.packByte(highNibble, newMedalCount);
+            newPackedMedalByte = g_packByte(highNibble, newMedalCount);
         if(nibbleToChange == 2)
-            newPackedMedalByte = dr.packByte(newMedalCount, lowNibble);
+            newPackedMedalByte = g_packByte(newMedalCount, lowNibble);
         newMedalCount = 0;
     //if these are the currently selected troops, and medals are set to none, change current troop type to none
         if(troopIndex == troopTypeToChange)
         {
-            dr.fw.writeOneElementToFile(GEN_TROOP_TYPE, 1, 0, listIndex);
-            troopClass = troopType[0];
+            //df.fw.writeOneElementToFile(GEN_TROOP_TYPE, 1, 0, listIndex);
+            troopType = troopType[0];
             troopIndex = 0;
             troopTypeBuff[listIndex] = 0;
         }
     }
 //finally, write the new value to the file and update the appropriate arrays.
-    if(dr.fw.writeOneElementToFile(fileOffset, 1, newPackedMedalByte, listIndex))
+    if(1/*df.fw.writeOneElementToFile(fileOffset, 1, newPackedMedalByte, listIndex)*/)
     {
         *packedMedalToChange = newPackedMedalByte;
         troopMedals[troopTypeToChange] = newMedalCount;
@@ -352,7 +346,7 @@ int General::changeGenTroopType(const ushort newGenTroopType)
         success = 1;
     }
 
-    if(dr.fw.writeOneElementToFile(GEN_TROOP_TYPE, 1, newGenTroopType, listIndex))
+    if(1/*df.fw.writeOneElementToFile(GEN_TROOP_TYPE, 1, newGenTroopType, listIndex)*/)
     {
         troopIndex               = newGenTroopType;
         troopTypeBuff[listIndex] = newGenTroopType;
@@ -381,7 +375,7 @@ int General::setSearchFortifyStatus(const bool setNaisei)
         domesticStatusBuff[listIndex] = (newNaisei << 8) | ((domesticStatusBuff[listIndex] & 0x00FF));
     }
 
-    dr.fw.writeOneElementToFile(GEN_DOMESTICS_STATUS, 2, domesticStatusBuff[listIndex], listIndex);
+//    df.fw.writeOneElementToFile(GEN_DOMESTICS_STATUS, 2, domesticStatusBuff[listIndex], listIndex);
 
     return 1;
 }
@@ -393,10 +387,10 @@ void General::setStatus(const int fs1, const int fs2)
 
     FsBuffer1[listIndex] = fs1;
     FsBuffer2[listIndex] = fs2;
-
-    dr.fw.writeOneElementToFile(FIELD_STATUS_1, 1, fs1, listIndex);
-    dr.fw.writeOneElementToFile(FIELD_STATUS_2, 1, fs2, listIndex);
-
+/*
+    df.fw.writeOneElementToFile(FIELD_STATUS_1, 1, fs1, listIndex);
+    df.fw.writeOneElementToFile(FIELD_STATUS_2, 1, fs2, listIndex);
+*/
     return;
 }
 
@@ -417,9 +411,7 @@ void General::setLocation(const int locType, const int newLoc)
 
     location                   = newLoc;
     locationNumBuff[listIndex] = locForFile;
-    dr.fw.writeOneElementToFile(GEN_LOCATION, 2, locForFile, listIndex);
-
-    needsUpdate = true;
+//    df.fw.writeOneElementToFile(GEN_LOCATION, 2, locForFile, listIndex);
 
     return;
 }
@@ -428,9 +420,7 @@ void General::setOwner(const int newOwner)
 {
     owner                   = generalsNameList[newOwner];
     officerOwner[listIndex] = newOwner;
-    dr.fw.writeOneElementToFile(GEN_OFFICER_OWNERSHIP, 1, newOwner, listIndex);
-
-    needsUpdate = true;
+//    df.fw.writeOneElementToFile(GEN_OFFICER_OWNERSHIP, 1, newOwner, listIndex);
 
     return;
 }
@@ -439,9 +429,7 @@ void General::setTroopCount(const int newTroopCount)
 {
     currentTroopCount             = newTroopCount;
     currTroopCountBuff[listIndex] = newTroopCount;
-    dr.fw.writeOneElementToFile(GEN_CURR_TROOP_COUNT, 1, newTroopCount, listIndex);
-
-    needsUpdate = true;
+//    df.fw.writeOneElementToFile(GEN_CURR_TROOP_COUNT, 1, newTroopCount, listIndex);
 
     return;
 }
@@ -457,7 +445,7 @@ int General::changeLocation(const int destLocType, const int destStatusType, con
     if((destStatusType == fieldStatus1) && (fixedLocation == destLocType) && (location == newLoc))
         return 1; //if trying to move to the same location that they are already in, with same status, just return.
 
-    if(dr.playingAs == listIndex)
+    if(df.getPlayingAs() == listIndex)
     {
         if((destLocType == 1) && ((newLoc < 0) || (newLoc > 33)))
             return -2; //fail, can't hide monarch
@@ -467,12 +455,12 @@ int General::changeLocation(const int destLocType, const int destStatusType, con
 
     if(destLocType && (destStatusType == 3) && (newLoc < 34)) //if new location is full; fail. Otherwise, general will be hidden,
     {                                                         //due to being removed from old loc and not added to new loc
-        if(dr.casArr[newLoc].isCastleFull())
+        if(df.casArr[newLoc].isCastleFull())
             return 0;
     }
     else
         if(!destLocType && (destStatusType == 3))
-            if(dr.divArr[newLoc].isDivisionFull())
+            if(df.divArr[newLoc].isDivisionFull())
                 return 0;
 
 //remove the general from castle or division
@@ -481,17 +469,17 @@ int General::changeLocation(const int destLocType, const int destStatusType, con
         if((location >= 0) && (location <= 33)) //this is for a castle, since hidden general is already prepared
         {
             if(fieldStatus1 == 3) //if they're a general
-                dr.casArr[location].removeGeneral_a(listIndex);
+                df.casArr[location].removeGeneral_a(listIndex);
             if(fieldStatus1 == 4) //if they're a captive
-                dr.casArr[location].removeCaptive(listIndex);
+                df.casArr[location].removeCaptive(listIndex);
         }
     }
     else //currently in a division
     {
         if(fieldStatus1 == 3) //if they're a general
-            dr.divArr[location].removeMember_a(listIndex);
+            df.divArr[location].removeMember_a(listIndex);
         if(fieldStatus1 == 4) //if they're a captive
-            dr.divArr[location].removeCaptive(listIndex);
+            df.divArr[location].removeCaptive(listIndex);
     }
 
 //now add the general to their new location
@@ -500,29 +488,27 @@ int General::changeLocation(const int destLocType, const int destStatusType, con
         if((newLoc >= 0) && (newLoc <= 33)) //if going to a castle
             {
                 if(destStatusType == 3)
-                    dr.casArr[newLoc].addGeneral_a(listIndex); //add general to castle
+                    df.casArr[newLoc].addGeneral_a(listIndex); //add general to castle
                 else //destStatusType == 4
-                    dr.casArr[newLoc].addCaptive_a(listIndex); //add captive to castle
-                dr.casArr[newLoc].cleanCaptiveHolder();    //check and clean captive hold area
+                    df.casArr[newLoc].addCaptive_a(listIndex); //add captive to castle
+                df.casArr[newLoc].cleanCaptiveHolder();    //check and clean captive hold area
             }
         else //else general is being hidden
         {
             //captives are already hidden, just clean up the Hold Area
-            for(int i = 0; i < dr.capHolder.numHeld; i++)
-                dr.capHolder.holdArea[i] = -1;
-            dr.capHolder.numHeld = 0;
+            for(int i = 0; i < df.capHolder.numHeld; i++)
+                df.capHolder.holdArea[i] = -1;
+            df.capHolder.numHeld = 0;
         }
     }
     else //going to a division
     {
         if(destStatusType == 3)
-            dr.divArr[newLoc].addMember_a(listIndex); //add general to division
+            df.divArr[newLoc].addMember_a(listIndex); //add general to division
         else  //destStatusType == 4
-            dr.divArr[newLoc].addCaptive_a(listIndex); //add captive to division
-        dr.divArr[newLoc].cleanCaptiveHolder();   //check captive hold area
+            df.divArr[newLoc].addCaptive_a(listIndex); //add captive to division
+        df.divArr[newLoc].cleanCaptiveHolder();   //check captive hold area
     }
-
-    needsUpdate = true;
 
     return 1;
 }
@@ -534,8 +520,6 @@ void General::hide(void)
     setLocation(1, 62);  //hide them
     if(currentTroopCount)
         setTroopCount(0);
-
-    needsUpdate = true;
 
     return;
 }

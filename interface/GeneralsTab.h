@@ -10,6 +10,15 @@ class GeneralsTab : public QWidget
 public:
     explicit GeneralsTab(QWidget* parent = 0);
              ~GeneralsTab();
+
+private:
+    QComboBox* genNamesComboBox;
+    QComboBox* ownerNamesComboBox;
+    
+    
+    QLineEdit* winsEditBox;
+    QLineEdit* lossesEditBox;
+    
 };
 
 #endif

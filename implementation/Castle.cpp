@@ -21,7 +21,6 @@ Castle::Castle(void)
     maxTroops      = 0;
     experience     = 0;
     expNext        = 0;
-    needsUpdate    = false;
     castleName = "";
 }
 
@@ -46,7 +45,6 @@ Castle::Castle(const Castle& rhsCas)
     maxTroops      = rhsCas.maxTroops;
     experience     = rhsCas.experience;
     expNext        = rhsCas.expNext;
-    needsUpdate    = rhsCas.needsUpdate;
     castleName     = rhsCas.castleName;
 }
 
@@ -74,7 +72,6 @@ Castle& Castle::operator=(const Castle& rhsCas)
     maxTroops      = rhsCas.maxTroops;
     experience     = rhsCas.experience;
     expNext        = rhsCas.expNext;
-    needsUpdate    = rhsCas.needsUpdate;
     castleName     = rhsCas.castleName;
 
     return *this;
@@ -123,12 +120,10 @@ void Castle::setCastleEmpty(void)
     ruler          = -1;
     troopCount     = 0;
     hasPlayerRuler = 0;
-    dr.fw.writeOneElementToFile(CASTLE_OWNERSHIP, 1, 171, castleNum);
+//    df.fw.writeOneElementToFile(CASTLE_OWNERSHIP, 1, 171, castleNum);
     castleOwnership[castleNum] = 171;
-    dr.fw.writeOneElementToFile(CASTLE_CURR_TROOPS, 2, 0, castleNum);
+//    df.fw.writeOneElementToFile(CASTLE_CURR_TROOPS, 2, 0, castleNum);
     castleCurrentTroops[castleNum] = 0;
-
-    needsUpdate = true;
 
     return;
 }
@@ -149,8 +144,6 @@ void Castle::removeCaptive(const int genIndex)
 
     dr.genArr[genIndex].hide();
 
-    needsUpdate = true;
-
     return;
 }
 
@@ -167,16 +160,14 @@ int Castle::changeLeader(const int genIndex)
         return 0; //denied - castle's ruler is present, so they must be leader
 
     //find the new leader in the array and get their internal general ID
-    newLeader = dr.genArr[generals[genIndex]].listIndex;
+    newLeader = df.genArr[generals[genIndex]].getListIndex();
 
     //demoting the current leader
-    dr.genArr[leader].setStatus(3,0);
+    df.genArr[leader].setStatus(3,0);
 
     //promote new leader
     leader = newLeader;
-    dr.genArr[newLeader].setStatus(3,2);
-
-    needsUpdate = true;
+    df.genArr[newLeader].setStatus(3,2);
 
     return 1;
 }
@@ -188,9 +179,7 @@ int Castle::adjustTroops(const int newTroops)
 
     troopCount = newTroops;
     castleCurrentTroops[castleNum] = troopCount;
-    dr.fw.writeOneElementToFile(CASTLE_CURR_TROOPS, 2, troopCount, castleNum);
-
-    needsUpdate = true;
+//    df.fw.writeOneElementToFile(CASTLE_CURR_TROOPS, 2, troopCount, castleNum);
 
     return 1;
 }
@@ -206,17 +195,15 @@ int Castle::adjustLevel(const int newLevel)
     experience                  = (level - 1) * 1200;
     expNext                     = level * 1200;
     castleExperience[castleNum] = experience;
-    dr.fw.writeOneElementToFile(CASTLE_EXPERIENCE, 2, experience, castleNum);
+//    df.fw.writeOneElementToFile(CASTLE_EXPERIENCE, 2, experience, castleNum);
 
     maxTroops = (level + 5) * 10;
     if(troopCount > maxTroops)
     {
         troopCount                     = maxTroops;
         castleCurrentTroops[castleNum] = troopCount;
-        dr.fw.writeOneElementToFile(CASTLE_CURR_TROOPS, 2, troopCount, castleNum);
+//        df.fw.writeOneElementToFile(CASTLE_CURR_TROOPS, 2, troopCount, castleNum);
     }
-
-    needsUpdate = true;
 
     return 1;
 }
@@ -235,31 +222,31 @@ int Castle::changeRuler(const int genIndex)
 
     newRulerPresent = false;
 
-    if((leader == dr.playingAs) && (leader != genIndex)) //if the player's monarch is in this castle
+    if((leader == df.getPlayingAs()) && (leader != genIndex)) //if the player's monarch is in this castle
         return 0;                                        //then you can't change the ruler
     else
-        if((leader == dr.playingAs) && (leader == genIndex)) //if trying to change ruler to the player's monarch when
+        if((leader == df.getPlayingAs()) && (leader == genIndex)) //if trying to change ruler to the player's monarch when
             return 1;                                        //they are already here, just return success right away
 
     newRuler = generalsNameList[genIndex];
 
     for(int i = 0; i < numGenerals; i++)//own the generals, if any
-        dr.genArr[generals[i]].setOwner(genIndex);
+        df.genArr[generals[i]].setOwner(genIndex);
 
     for(int i = 0; i < numCaptives; i++)//own the captives, if any
     {
-        dr.genArr[captives[i]].setOwner(genIndex);
-        if(dr.playingAs == genIndex)
-            dr.genArr[captives[i]].setStatus(4,0);
+        df.genArr[captives[i]].setOwner(genIndex);
+        if(df.getPlayingAs() == genIndex)
+            df.genArr[captives[i]].setStatus(4,0);
         else
-            dr.genArr[captives[i]].setStatus(4,1);
+            df.genArr[captives[i]].setStatus(4,1);
     }
 
     if(numGenerals) //only take ownership of castle if someone is in it
     {
         ruler = genIndex;
         castleOwnership[castleNum] = genIndex;
-        dr.fw.writeOneElementToFile(CASTLE_OWNERSHIP, 1, genIndex, castleNum);
+//        df.fw.writeOneElementToFile(CASTLE_OWNERSHIP, 1, genIndex, castleNum);
     }
 
     for(int i = 0; i < numGenerals; i++)
@@ -269,15 +256,13 @@ int Castle::changeRuler(const int genIndex)
     if(newRulerPresent) //if the new ruler of this castle is also present in this castle
     {                   //then make them the leader
         //demote old leader
-        dr.genArr[leader].setStatus(3,0);
+        df.genArr[leader].setStatus(3,0);
         //update data to reflect new leader
-        dr.genArr[genIndex].setStatus(3,2);
+        df.genArr[genIndex].setStatus(3,2);
         leader = genIndex;
 
         return 2;
     }
-
-    needsUpdate = true;
 
     return 1;
 }
@@ -294,7 +279,7 @@ int Castle::findRulerIndex(void)
     return rulerIndex;
 }
 
-bool Castle::addMultiGenFromList(int* const genBuff, const int genCount) // *********************************************** CHECKED - SEEMS OK
+bool Castle::addMultiGenFromList(int* const genBuff, const int genCount)
 {
     int  gCount     = genCount;
     int  genDeleted = 0;
@@ -324,7 +309,7 @@ bool Castle::addMultiGenFromList(int* const genBuff, const int genCount) // ****
                 genDeleted++;
                 j = numGenerals;
             }
-    dr.insertionSort(genBuff, gCount);
+    g_insertionSort(genBuff, gCount);
     gCount -= genDeleted;
     if(!gCount)
         return false;
@@ -334,11 +319,11 @@ bool Castle::addMultiGenFromList(int* const genBuff, const int genCount) // ****
     while((genAdder < gCount) && (numGenerals < 10))
     {
         gen = genBuff[genAdder];
-        dr.genArr[gen].changeLocation(1, 3, castleNum);
+        df.genArr[gen].changeLocation(1, 3, castleNum);
         genAdder++;
         gensAdded = true;
     }
-     dr.insertionSort(generals, numGenerals); //after adding generals, sort list
+     g_insertionSort(generals, numGenerals); //after adding generals, sort list
 
     if(needRuler)
         changeRuler(generals[0]);
@@ -346,7 +331,7 @@ bool Castle::addMultiGenFromList(int* const genBuff, const int genCount) // ****
     return gensAdded;
 }
 
-bool Castle::delMultiGenFromList(int* const genBuff, const int genCount)  // ********************************************** CHECKED - SEEMS OK
+bool Castle::delMultiGenFromList(int* const genBuff, const int genCount)
 {
     int  gCount      = genCount;
     int  oldRuler    = ruler;
@@ -364,7 +349,7 @@ bool Castle::delMultiGenFromList(int* const genBuff, const int genCount)  // ***
         genBuff[i] = generals[genBuff[i]];
 
     for(int i = 0; i < gCount; i++) //if player monarch is in genBuff, remove it
-        if(genBuff[i] == dr.playingAs)
+        if(genBuff[i] == df.getPlayingAs())
         {
             for(int j = i; j < gCount - 1; j++)
                 genBuff[j] = genBuff[j + 1];
@@ -390,26 +375,26 @@ bool Castle::delMultiGenFromList(int* const genBuff, const int genCount)  // ***
 
     for(int i = 0; i < gCount; i++) //delete the selected generals from castle
     {
-        dr.genArr[genBuff[i]].changeLocation(1, 3, 62); //hide general
+        df.genArr[genBuff[i]].changeLocation(1, 3, 62); //hide general
         gensDeleted = true;
     }
 
     if(needRuler) //if deleting ruler, all their other castles need new rulers
-        dr.findNewRulers(oldRuler);
+        df.findNewRulers(oldRuler);
 
     if(numGenerals && needRuler)
     {
         changeRuler(generals[0]);
 
         leader = generals[0];
-        dr.genArr[leader].setStatus(3,2);
+        df.genArr[leader].setStatus(3,2);
         needLeader = false;
     }
 
     if(numGenerals && needLeader)
     {
         leader = generals[0];
-        dr.genArr[leader].setStatus(3,2);
+        df.genArr[leader].setStatus(3,2);
     }
 
     if(!numGenerals) //if no one left in castle, clean castle up as needed
@@ -421,14 +406,14 @@ bool Castle::delMultiGenFromList(int* const genBuff, const int genCount)  // ***
     return gensDeleted;
 }
 
-bool Castle::addMultiCapFromList(int* const capBuff, const int capCount)  // ********************************************** CHECKED - OK
+bool Castle::addMultiCapFromList(int* const capBuff, const int capCount)
 {
     int  cCount        = capCount;
     int  capsDeleted   = 0;
     bool captivesAdded = false;
 
     for(int i = 0; i < cCount; i++) //if player monarch is in capBuff, remove it
-        if(capBuff[i] == dr.playingAs)
+        if(capBuff[i] == df.getPlayingAs())
         {
             for(int j = i; j < cCount - 1; j++)
                 capBuff[j] = capBuff[j + 1];
@@ -448,7 +433,7 @@ bool Castle::addMultiCapFromList(int* const capBuff, const int capCount)  // ***
                 capsDeleted++;
                 j = numGenerals;
             }
-    dr.insertionSort(capBuff, cCount);
+    g_insertionSort(capBuff, cCount);
     cCount -= capsDeleted;
     if(!cCount)
         return false;
@@ -463,7 +448,7 @@ bool Castle::addMultiCapFromList(int* const capBuff, const int capCount)  // ***
                 capsDeleted++;
                 j = numCaptives;
             }
-    dr.insertionSort(capBuff, cCount);
+    g_insertionSort(capBuff, cCount);
     cCount -= capsDeleted;
     if(!cCount)
         return false;
@@ -473,16 +458,16 @@ bool Castle::addMultiCapFromList(int* const capBuff, const int capCount)  // ***
     while((capAdder < cCount) && (numCaptives < 171))
     {
         gen = capBuff[capAdder];
-        dr.genArr[gen].changeLocation(1, 4, castleNum);
+        df.genArr[gen].changeLocation(1, 4, castleNum);
         capAdder++;
         captivesAdded = true;
     }
-     dr.insertionSort(captives, numCaptives); //after adding captives, sort list
+     g_insertionSort(captives, numCaptives); //after adding captives, sort list
 
     return captivesAdded;
 }
 
-bool Castle::delMultiCapFromList(int* const capBuff, const int capCount)  // ********************************************** CHECKED - OK
+bool Castle::delMultiCapFromList(int* const capBuff, const int capCount)
 {
     int  cCount          = capCount;
     bool captivesDeleted = false;
@@ -498,7 +483,7 @@ bool Castle::delMultiCapFromList(int* const capBuff, const int capCount)  // ***
 
     for(int i = 0; i < cCount; i++)
     {
-        dr.genArr[capBuff[i]].changeLocation(1, 3, 62);
+        df.genArr[capBuff[i]].changeLocation(1, 3, 62);
         captivesDeleted = true;
     }
 
@@ -511,7 +496,7 @@ bool Castle::delMultiCapFromList(int* const capBuff, const int capCount)  // ***
    0 - no generals were selected for demotion to captive
    1 - operation completed successfully
 */
-int Castle::fromGenToCap(int* const genBuff, const int genCount)  // ********************************************** CHECKED - SEEMS OK
+int Castle::fromGenToCap(int* const genBuff, const int genCount)
 {
     int  gCount     = genCount;
     int  success    = 0;
@@ -529,7 +514,7 @@ int Castle::fromGenToCap(int* const genBuff, const int genCount)  // ***********
         genBuff[i] = generals[genBuff[i]];
 
     for(int i = 0; i < gCount; i++) //if player monarch is in genBuff, remove it
-        if(genBuff[i] == dr.playingAs)
+        if(genBuff[i] == df.getPlayingAs())
         {
             for(int j = i; j < gCount - 1; j++)
                 genBuff[j] = genBuff[j + 1];
@@ -561,7 +546,7 @@ int Castle::fromGenToCap(int* const genBuff, const int genCount)  // ***********
         success = 1;
     }
 
-    dr.insertionSort(captives, numCaptives);
+    g_insertionSort(captives, numCaptives);
 
     if(needRuler)
     {
@@ -569,22 +554,22 @@ int Castle::fromGenToCap(int* const genBuff, const int genCount)  // ***********
         changeRuler(generals[0]);
 
         leader = generals[0];
-        dr.genArr[leader].setStatus(3,2);
+        df.genArr[leader].setStatus(3,2);
         needLeader = false;
 
-        dr.findNewRulers(oldRuler);
+        df.findNewRulers(oldRuler);
     }
 
     if(needLeader)
     {
         leader = generals[0];
-        dr.genArr[leader].setStatus(3,2);
+        df.genArr[leader].setStatus(3,2);
     }
 
     return success;
 }
 
-bool Castle::fromCapToGen(int* const capBuff, const int capCount)// ********************************************** CHECKED - SEEMS OK
+bool Castle::fromCapToGen(int* const capBuff, const int capCount)
 {
     int  cCount         = capCount;
     bool capsPromoted   = false;
@@ -605,7 +590,7 @@ bool Castle::fromCapToGen(int* const capBuff, const int capCount)// ************
         capsPromoted = true;
     }
 
-    dr.insertionSort(generals, numGenerals);
+    g_insertionSort(generals, numGenerals);
 
     return capsPromoted;
 }
@@ -625,7 +610,7 @@ void Castle::removeGeneral_a(const int genIndex)
     numGenerals--;
 
     //hide the general being removed
-    dr.genArr[genIndex].hide();
+    df.genArr[genIndex].hide();
 
     if(!numGenerals) //if castle is empty now
     {
@@ -635,7 +620,7 @@ void Castle::removeGeneral_a(const int genIndex)
 
     else //someone is still in the castle, so change leader if necessary
     {
-        if(genIndex == dr.playingAs)
+        if(genIndex == df.getPlayingAs())
         {
             setHasMonarch(false);
             moveCaptivesToHold();
@@ -644,88 +629,82 @@ void Castle::removeGeneral_a(const int genIndex)
         if(leader == genIndex)
         {
             leader = generals[0];
-            dr.genArr[leader].setStatus(3,2);
+            df.genArr[leader].setStatus(3,2);
         }
     }
-
-    needsUpdate = true;
 
     return;
 }
 
 void Castle::addGeneral_a(const int genIndex)
 {
-    int genTroops = dr.genArr[genIndex].troopMedals[dr.genArr[genIndex].troopIndex] * 10;
+    int genTroops = df.genArr[genIndex].troopMedals[df.genArr[genIndex].getTroopIndex()] * 10;
 
     if(!numGenerals)  //castle was empty, needs a ruler and leader;
     {                 //used after already initialized
         generals[0] = genIndex;
         numGenerals++;
-        dr.genArr[genIndex].setTroopCount(genTroops);
+        df.genArr[genIndex].setTroopCount(genTroops);
 
         leader = genIndex;
-        dr.genArr[genIndex].setStatus(3,2); //first general in castle, make
-        dr.genArr[genIndex].setLocation(1, castleNum);
+        df.genArr[genIndex].setStatus(3,2); //first general in castle, make
+        df.genArr[genIndex].setLocation(1, castleNum);
         
-        ruler = officerOwner[dr.genArr[genIndex].listIndex];
+        ruler = officerOwner[df.genArr[genIndex].getListIndex()];
         castleOwnership[castleNum] = ruler;
-        dr.fw.writeOneElementToFile(CASTLE_OWNERSHIP, 1, ruler, castleNum);
+//        df.fw.writeOneElementToFile(CASTLE_OWNERSHIP, 1, ruler, castleNum);
     }
     else
         if(!isCastleFull())
         {
             generals[numGenerals] = genIndex; //add new general to castle
             numGenerals++;
-            dr.genArr[genIndex].setTroopCount(genTroops);
+            df.genArr[genIndex].setTroopCount(genTroops);
 
-            if(dr.playingAs == genIndex) //if player monarch is coming here,
+            if(df.getPlayingAs() == genIndex) //if player monarch is coming here,
             {                            //make sure they own and rule everything
-                dr.genArr[genIndex].setStatus(3,2);
+                df.genArr[genIndex].setStatus(3,2);
                 changeRuler(genIndex);
-                dr.genArr[genIndex].setLocation(1, castleNum);
+                df.genArr[genIndex].setLocation(1, castleNum);
             }
             else //otherwise, make sure the new general is owned by the castle's
             {    //owner and that their status is not still leader from old castle
                 if((ruler == genIndex) && (leader != genIndex)) //incoming general is ruler, but not leader yet
                 {
-                    dr.genArr[leader].setStatus(3,0);
+                    df.genArr[leader].setStatus(3,0);
 
                     leader = genIndex;
-                    dr.genArr[genIndex].setStatus(3,2);
+                    df.genArr[genIndex].setStatus(3,2);
                 }
                 else
                 {
-                    dr.genArr[genIndex].setStatus(3,0);
-                    dr.genArr[genIndex].setOwner(ruler);
-                    dr.genArr[genIndex].setLocation(1, castleNum);
+                    df.genArr[genIndex].setStatus(3,0);
+                    df.genArr[genIndex].setOwner(ruler);
+                    df.genArr[genIndex].setLocation(1, castleNum);
                 }
             }
-            dr.insertionSort(generals, numGenerals);
+            g_insertionSort(generals, numGenerals);
         }
 
-        needsUpdate = true;
-
-return;
+    return;
 }
 
 int Castle::addCaptive_a(const int genIndex)
 {
-    if(dr.playingAs == genIndex) //fail, player monarch can't be captive
+    if(df.getPlayingAs() == genIndex) //fail, player monarch can't be captive
         return 0;
 
     captives[numCaptives] = genIndex;
     numCaptives++;
 
-    dr.genArr[genIndex].setOwner(ruler);
-    dr.genArr[genIndex].setLocation(1, castleNum);
-    dr.genArr[genIndex].setTroopCount(0);
+    df.genArr[genIndex].setOwner(ruler);
+    df.genArr[genIndex].setLocation(1, castleNum);
+    df.genArr[genIndex].setTroopCount(0);
 
-    if(dr.playingAs == ruler)
-        dr.genArr[genIndex].setStatus(4,0);
+    if(df.getPlayingAs() == ruler)
+        df.genArr[genIndex].setStatus(4,0);
     else
-        dr.genArr[genIndex].setStatus(4,1);
-
-    needsUpdate = true;
+        df.genArr[genIndex].setStatus(4,1);
 
     return 1;
 }
@@ -737,16 +716,14 @@ void Castle::moveCaptivesToHold(void)
 
     for(int i = 0; i < numCaptives; i++)
     {
-        dr.genArr[captives[i]].hide(); //set hidden status to captive
+        df.genArr[captives[i]].hide(); //set hidden status to captive
 
-        dr.capHolder.holdArea[i] = captives[i]; //move them to captive hold area
-        dr.capHolder.numHeld++;
+        df.capHolder.holdArea[i] = captives[i]; //move them to captive hold area
+        df.capHolder.numHeld++;
 
         captives[i] = -1;
     }
     numCaptives = 0;
-
-    needsUpdate = true;
 
     return;
 }
@@ -754,25 +731,23 @@ void Castle::moveCaptivesToHold(void)
 void Castle::cleanCaptiveHolder(void)
 {
     //if any captives are in limbo, take possession of them
-    if(dr.capHolder.numHeld)
+    if(df.capHolder.numHeld)
     {
-        for(int i = numCaptives, j = 0; j < dr.capHolder.numHeld; j++, i++)
+        for(int i = numCaptives, j = 0; j < df.capHolder.numHeld; j++, i++)
         {
-            captives[i] = dr.capHolder.holdArea[j]; //take captive from hold area
-            dr.capHolder.holdArea[j] = -1;          //set hold area array spot to empty
+            captives[i] = df.capHolder.holdArea[j]; //take captive from hold area
+            df.capHolder.holdArea[j] = -1;          //set hold area array spot to empty
             numCaptives++;
-            dr.genArr[captives[i]].setOwner(ruler); //set captive owner to castle owner
-            dr.genArr[captives[i]].setLocation(1, castleNum); //set their location to this castle
-            if(ruler == dr.playingAs)
-                dr.genArr[captives[i]].setStatus(4,0); //captive of player
+            df.genArr[captives[i]].setOwner(ruler); //set captive owner to castle owner
+            df.genArr[captives[i]].setLocation(1, castleNum); //set their location to this castle
+            if(ruler == df.getPlayingAs())
+                df.genArr[captives[i]].setStatus(4,0); //captive of player
             else
-                dr.genArr[captives[i]].setStatus(4,1); //captive of AI
+                df.genArr[captives[i]].setStatus(4,1); //captive of AI
         }
-        dr.capHolder.numHeld = 0; //captive array now clear
-        dr.insertionSort(captives, numCaptives); //sort the castle captives array
+        df.capHolder.numHeld = 0; //captive array now clear
+        g_insertionSort(captives, numCaptives); //sort the castle captives array
     }
-
-    needsUpdate = true;
 
     return;
 }

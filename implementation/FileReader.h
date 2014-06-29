@@ -10,10 +10,11 @@ using namespace std;
 
 class FileReader
 {
-public:
+private:
     fstream fpSavegame;
-    string savefileName;
+    string  savefileName;
 
+public:
     FileReader (void) : savefileName("") {}
     FileReader (char filename[]) :  savefileName(filename) {}
     ~FileReader(void) {}
