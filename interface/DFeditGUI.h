@@ -21,10 +21,11 @@ public:
     QString getPlayerName(void);
 
 private:
+    DragonForce  dr;
+
     QTabWidget*  dfTab;
     QGridLayout* layout;
     QString      fileName;
-    DragonForce  dr;
 };
 
 #endif // DFEDITGUI_H

@@ -15,7 +15,7 @@ public:
     string savefileName;
 
     FileWriter (void) {}
-    FileWriter (char filename[]) :  savefileName(filename) {}
+    FileWriter (string filename) :  savefileName(filename) {}
     ~FileWriter(void) {}
 
     FileWriter(const FileWriter& rhsFW);

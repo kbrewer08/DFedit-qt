@@ -105,7 +105,7 @@ void Division::removeCaptive(const int genIndex)
     numCaptives--;
 
     //hide the captive being removed
-    df.genArr[genIndex].hide();
+    dr.genArr[genIndex].hide();
 
     return;
 }
@@ -136,19 +136,19 @@ int Division::changeRuler(const int rulerIndex)
 
     newRulerPresent = false;
 
-    if((leader == df.getPlayingAs()) && (leader != rulerIndex)) //if the player's monarch is in this division
+    if((leader == dr.getPlayingAs()) && (leader != rulerIndex)) //if the player's monarch is in this division
         return 0;                                          //then you can't change the ruler
     else
-        if((leader == df.getPlayingAs()) && (leader == rulerIndex)) //if trying to change ruler to the player's monarch when
+        if((leader == dr.getPlayingAs()) && (leader == rulerIndex)) //if trying to change ruler to the player's monarch when
             return 1;                                          //they are already here, just return success right away
 
     newRuler = generalsNameList[rulerIndex];
 
     for(int i = 0; i < numMembers; i++)//own the generals, if any
-        df.genArr[members[i]].setOwner(rulerIndex);
+        dr.genArr[members[i]].setOwner(rulerIndex);
 
     for(int i = 0; i < numCaptives; i++)//own the captives, if any
-        df.genArr[captives[i]].setOwner(rulerIndex);
+        dr.genArr[captives[i]].setOwner(rulerIndex);
 
     ruler = rulerIndex;
 
@@ -159,9 +159,9 @@ int Division::changeRuler(const int rulerIndex)
     if(newRulerPresent) //if the new ruler of this division is also present in
     {                   //this division, then make them the leader
         //demote old leader
-        df.genArr[leader].setStatus(3,0);
+        dr.genArr[leader].setStatus(3,0);
         //update data to reflect new leader
-        df.genArr[rulerIndex].setStatus(3,1);
+        dr.genArr[rulerIndex].setStatus(3,1);
         leader = rulerIndex;
 
         return 2;
@@ -183,14 +183,14 @@ int Division::changeLeader(const int leaderIndex)
         return 0; //denied - division's ruler is present, so they must be leader
 
     //find the new leader in the array and get their internal general ID
-    newLeader = df.genArr[members[leaderIndex]].getListIndex();
+    newLeader = dr.genArr[members[leaderIndex]].getListIndex();
 
     //demoting the current leader
-    df.genArr[leader].setStatus(3,0);
+    dr.genArr[leader].setStatus(3,0);
 
     //promote new leader
     leader = newLeader;
-    df.genArr[newLeader].setStatus(3,1);
+    dr.genArr[newLeader].setStatus(3,1);
 
     return 1;
 }
@@ -203,7 +203,7 @@ void Division::changeStatus(const int newStatus) //  ***************************
     {
         status = newStatus;
         divisionStatus[divNum] = newStatus;
-//        df.fw.writeOneElementToFile(DIVISION_STATUS, 1, newStatus, divNum);
+//        dr.fw.writeOneElementToFile(DIVISION_STATUS, 1, newStatus, divNum);
     }
 
     return;
@@ -220,7 +220,7 @@ void Division::setNewGoal(const int newGoal)
 {
     goal = newGoal;
     divisionDestination[divNum] = newGoal;
-//    df.fw.writeOneElementToFile(DIVISION_DESTINATION, 1, newGoal, divNum);
+//    dr.fw.writeOneElementToFile(DIVISION_DESTINATION, 1, newGoal, divNum);
 
     return;
 }
@@ -248,7 +248,7 @@ bool Division::addMultiGenFromList(int* const genBuff, const int genCount)
                 genDeleted++;
                 j = numMembers;
             }
-    g_insertionSort(genBuff, gCount);
+    dr.insertionSort(genBuff, gCount);
     gCount -= genDeleted;
     if(!gCount)
         return false;
@@ -258,11 +258,11 @@ bool Division::addMultiGenFromList(int* const genBuff, const int genCount)
     while((genAdder < gCount) && (numMembers < 5))
     {
         gen = genBuff[genAdder];
-        df.genArr[gen].changeLocation(0, 3, divNum);
+        dr.genArr[gen].changeLocation(0, 3, divNum);
         genAdder++;
         gensAdded = true;
     }
-     g_insertionSort(members, numMembers); //after adding members, sort list
+     dr.insertionSort(members, numMembers); //after adding members, sort list
 
     return gensAdded;
 }
@@ -283,7 +283,7 @@ bool Division::delMultiGenFromList(int* const genBuff, const int genCount)
         genBuff[i] = members[genBuff[i]];
 
     for(int i = 0; i < gCount; i++) //if player monarch is in genBuff, remove it
-        if(genBuff[i] == df.getPlayingAs())
+        if(genBuff[i] == dr.getPlayingAs())
         {
             for(int j = i; j < gCount - 1; j++)
                 genBuff[j] = genBuff[j + 1];
@@ -304,14 +304,14 @@ bool Division::delMultiGenFromList(int* const genBuff, const int genCount)
 
     for(int i = 0; i < gCount; i++) //delete the selected members from division
     {
-        df.genArr[genBuff[i]].changeLocation(1, 3, 62); //hide general
+        dr.genArr[genBuff[i]].changeLocation(1, 3, 62); //hide general
         gensDeleted = true;
     }
 
     if(numMembers && needLeader)
     {
         leader = members[0];
-        df.genArr[leader].setStatus(3,1);
+        dr.genArr[leader].setStatus(3,1);
     }
 
     if(!numMembers) //if no one left in division, clean division up as needed
@@ -327,7 +327,7 @@ bool Division::addMultiCapFromList(int* const capBuff, const int capCount)
     bool captivesAdded = false;
 
     for(int i = 0; i < cCount; i++) //if player monarch is in capBuff, remove it
-        if(capBuff[i] == df.getPlayingAs())
+        if(capBuff[i] == dr.getPlayingAs())
         {
             for(int j = i; j < cCount - 1; j++)
                 capBuff[j] = capBuff[j + 1];
@@ -347,7 +347,7 @@ bool Division::addMultiCapFromList(int* const capBuff, const int capCount)
                 capsDeleted++;
                 j = numMembers;
             }
-    g_insertionSort(capBuff, cCount);
+    dr.insertionSort(capBuff, cCount);
     cCount -= capsDeleted;
     if(!cCount)
         return false;
@@ -362,7 +362,7 @@ bool Division::addMultiCapFromList(int* const capBuff, const int capCount)
                 capsDeleted++;
                 j = numCaptives;
             }
-    g_insertionSort(capBuff, cCount);
+    dr.insertionSort(capBuff, cCount);
     cCount -= capsDeleted;
     if(!cCount)
         return false;
@@ -372,11 +372,11 @@ bool Division::addMultiCapFromList(int* const capBuff, const int capCount)
     while((capAdder < cCount) && (numCaptives < 171))
     {
         gen = capBuff[capAdder];
-        df.genArr[gen].changeLocation(0, 4, divNum);
+        dr.genArr[gen].changeLocation(0, 4, divNum);
         capAdder++;
         captivesAdded = true;
     }
-     g_insertionSort(captives, numCaptives); //after adding captives, sort list
+     dr.insertionSort(captives, numCaptives); //after adding captives, sort list
 
     return captivesAdded;
 }
@@ -397,7 +397,7 @@ bool Division::delMultiCapFromList(int* const capBuff, const int capCount)
 
     for(int i = 0; i < cCount; i++)
     {
-        df.genArr[capBuff[i]].changeLocation(1, 3, 62);
+        dr.genArr[capBuff[i]].changeLocation(1, 3, 62);
         captivesDeleted = true;
     }
 
@@ -422,7 +422,7 @@ int Division::fromGenToCap(int* const genBuff, const int genCount)
         genBuff[i] = members[genBuff[i]];
 
     for(int i = 0; i < gCount; i++) //if player monarch is in genBuff, remove it
-        if(genBuff[i] == df.getPlayingAs())
+        if(genBuff[i] == dr.getPlayingAs())
         {
             for(int j = i; j < gCount - 1; j++)
                 genBuff[j] = genBuff[j + 1];
@@ -454,7 +454,7 @@ int Division::fromGenToCap(int* const genBuff, const int genCount)
         success = 1;
     }
 
-    g_insertionSort(captives, numCaptives);
+    dr.insertionSort(captives, numCaptives);
 
     if(needRuler)
     {
@@ -462,16 +462,16 @@ int Division::fromGenToCap(int* const genBuff, const int genCount)
         changeRuler(members[0]);
 
         leader = members[0];
-        df.genArr[leader].setStatus(3,2);
+        dr.genArr[leader].setStatus(3,2);
         needLeader = false;
 
-        df.findNewRulers(oldRuler);
+        dr.findNewRulers(oldRuler);
     }
 
     if(needLeader)
     {
         leader = members[0];
-        df.genArr[leader].setStatus(3,2);
+        dr.genArr[leader].setStatus(3,2);
     }
 
     return success;
@@ -498,7 +498,7 @@ bool Division::fromCapToGen(int* const capBuff, const int capCount)
         capsPromoted = true;
     }
 
-    g_insertionSort(members, numMembers);
+    dr.insertionSort(members, numMembers);
 
     return capsPromoted;
 }
@@ -518,15 +518,15 @@ void Division::removeMember_a(const int genIndex)
     numMembers--;
 
     //hide the general being removed
-    df.genArr[genIndex].hide();
+    dr.genArr[genIndex].hide();
 
-    troopCount -= df.genArr[genIndex].getCurrTroopCount();
+    troopCount -= dr.genArr[genIndex].getCurrTroopCount();
 
     if(!numMembers) //if division is empty now
         setDivisionEmpty();
     else //someone is still in the division, so change leader if necessary
     {
-        if(genIndex == df.getPlayingAs())
+        if(genIndex == dr.getPlayingAs())
         {
             setHasPlayer( false);
             moveCaptivesToHold();
@@ -535,10 +535,10 @@ void Division::removeMember_a(const int genIndex)
         if(leader == genIndex)
         {
             leader = members[0];
-            df.genArr[leader].setStatus(3,1);
+            dr.genArr[leader].setStatus(3,1);
 
             activeArmies[divNum] = members[0];
-//            df.fw.writeOneElementToFile(DIVISION_LIST, 1, members[0], divNum);
+//            dr.fw.writeOneElementToFile(DIVISION_LIST, 1, members[0], divNum);
         }
     }
 
@@ -547,28 +547,28 @@ void Division::removeMember_a(const int genIndex)
 
 void Division::addMember_a(const int genIndex)
 {
-    int genTroops = df.genArr[genIndex].troopMedals[df.genArr[genIndex].getTroopIndex()] * 10;
+    int genTroops = dr.genArr[genIndex].troopMedals[dr.genArr[genIndex].getTroopIndex()] * 10;
 
     if(!isDivisionFull())
     {
         members[numMembers] = genIndex; //add new general to division
         numMembers++;
-        df.genArr[genIndex].setTroopCount(genTroops);
+        dr.genArr[genIndex].setTroopCount(genTroops);
 
-        if(df.getPlayingAs() == genIndex) //if player monarch is coming here,
+        if(dr.getPlayingAs() == genIndex) //if player monarch is coming here,
         {                            //make sure they own and rule everything
             changeRuler(genIndex);
-            df.genArr[genIndex].setStatus(3,1);
-            df.genArr[genIndex].setLocation(0, divNum);
+            dr.genArr[genIndex].setStatus(3,1);
+            dr.genArr[genIndex].setLocation(0, divNum);
         }
         else //otherwise, make sure the new general is owned by the division's
         {    //owner and that their status is not still leader from old division
-            df.genArr[genIndex].setStatus(3,0);
-            df.genArr[genIndex].setOwner(ruler);
-            df.genArr[genIndex].setLocation(0, divNum);
+            dr.genArr[genIndex].setStatus(3,0);
+            dr.genArr[genIndex].setOwner(ruler);
+            dr.genArr[genIndex].setLocation(0, divNum);
         }
-        troopCount += df.genArr[genIndex].getCurrTroopCount();
-        g_insertionSort(members, numMembers);
+        troopCount += dr.genArr[genIndex].getCurrTroopCount();
+        dr.insertionSort(members, numMembers);
     }
 
     return;
@@ -576,20 +576,20 @@ void Division::addMember_a(const int genIndex)
 
 void Division::addCaptive_a(const int genIndex)
 {
-    if(df.getPlayingAs() == genIndex) //fail, player monarch can't be captive
+    if(dr.getPlayingAs() == genIndex) //fail, player monarch can't be captive
         return;
 
     captives[numCaptives] = genIndex;
     numCaptives++;
 
-    df.genArr[genIndex].setOwner(ruler);
-    df.genArr[genIndex].setLocation(0, divNum);
-    df.genArr[genIndex].setTroopCount(0);
+    dr.genArr[genIndex].setOwner(ruler);
+    dr.genArr[genIndex].setLocation(0, divNum);
+    dr.genArr[genIndex].setTroopCount(0);
 
-    if(df.getPlayingAs() == ruler)
-        df.genArr[genIndex].setStatus(4,0);
+    if(dr.getPlayingAs() == ruler)
+        dr.genArr[genIndex].setStatus(4,0);
     else
-        df.genArr[genIndex].setStatus(4,1);
+        dr.genArr[genIndex].setStatus(4,1);
 
     return;
 }
@@ -598,10 +598,10 @@ void Division::moveCaptivesToHold(void)
 {
     for(int i = 0; i < numCaptives; i++)
     {
-        df.genArr[captives[i]].hide(); //hide captive
+        dr.genArr[captives[i]].hide(); //hide captive
 
-        df.capHolder.holdArea[i] = captives[i]; //move them to captive hold area
-        df.capHolder.numHeld++;
+        dr.capHolder.holdArea[i] = captives[i]; //move them to captive hold area
+        dr.capHolder.numHeld++;
 
         captives[i] = -1;
     }
@@ -613,22 +613,22 @@ void Division::moveCaptivesToHold(void)
 void Division::cleanCaptiveHolder(void)
 {
     //if any captives are in limbo, take possession of them
-    if(df.capHolder.numHeld)
+    if(dr.capHolder.numHeld)
     {
-        for(int i = numCaptives, j = 0; j < df.capHolder.numHeld; j++, i++)
+        for(int i = numCaptives, j = 0; j < dr.capHolder.numHeld; j++, i++)
         {
-            captives[i] = df.capHolder.holdArea[j];
-            df.capHolder.holdArea[j] = -1;
+            captives[i] = dr.capHolder.holdArea[j];
+            dr.capHolder.holdArea[j] = -1;
             numCaptives++;
-            df.genArr[captives[i]].setOwner(ruler);
-            df.genArr[captives[i]].setLocation(0, divNum);
-            if(ruler == df.getPlayingAs())
-                df.genArr[captives[i]].setStatus(4,0); //captive owned by player
+            dr.genArr[captives[i]].setOwner(ruler);
+            dr.genArr[captives[i]].setLocation(0, divNum);
+            if(ruler == dr.getPlayingAs())
+                dr.genArr[captives[i]].setStatus(4,0); //captive owned by player
             else
-                df.genArr[captives[i]].setStatus(4,1); //captive owned by AI
+                dr.genArr[captives[i]].setStatus(4,1); //captive owned by AI
         }
-        df.capHolder.numHeld = 0;
-        g_insertionSort(captives, numCaptives);
+        dr.capHolder.numHeld = 0;
+        dr.insertionSort(captives, numCaptives);
     }
 
     return;
@@ -641,7 +641,7 @@ void Division::setDivisionEmpty(void)
     status = 0;
     troopCount = 0;
     hasPlayerRuler = 0;
-//    df.fw.writeOneElementToFile(DIVISION_STATUS, 1, 0, divNum);
+//    dr.fw.writeOneElementToFile(DIVISION_STATUS, 1, 0, divNum);
     activeDivisions[divNum] = 0;
     divisionStatus[divNum] = 0;
     moveCaptivesToHold();
@@ -658,16 +658,16 @@ void Division::moveMembersToCastle(void) //disband division by moving generals t
     {
         for(i = 0; (i < 34) && numMembers; i++)
         {
-            if(ruler == df.casArr[i].getRuler())
+            if(ruler == dr.casArr[i].getRuler())
             {
-                while(numMembers && !df.casArr[i].isCastleFull())
+                while(numMembers && !dr.casArr[i].isCastleFull())
                 {
                     gen = members[0]; //always do member index zero, because removing a general automatically re-sorts generals array
                     removeMember_a(gen);
-                    df.casArr[i].addGeneral_a(gen);
+                    dr.casArr[i].addGeneral_a(gen);
                 }
                 if(!numMembers)
-                    df.casArr[i].cleanCaptiveHolder();
+                    dr.casArr[i].cleanCaptiveHolder();
             }
         }
         if((i == 34) && numMembers)
@@ -686,20 +686,20 @@ void Division::setDivisionCoords(const int locNum)
 
     xCoordinate = x;
     divisionXcoordinate[divNum] =  x << 3;
-//    df.fw.writeOneElementToFile(DIVISION_X_COORD, 2, x << 3, divNum);
+//    dr.fw.writeOneElementToFile(DIVISION_X_COORD, 2, x << 3, divNum);
 
 
     yCoordinate = y;
     divisionYcoordinate[divNum] =  y << 3;
-//    df.fw.writeOneElementToFile(DIVISION_Y_COORD, 2, y << 3, divNum);
+//    dr.fw.writeOneElementToFile(DIVISION_Y_COORD, 2, y << 3, divNum);
 
     prev = locNum;
     divisionPrevious[divNum] = locNum;
-//    df.fw.writeOneElementToFile(DIVISION_PREVIOUS, 1, locNum, divNum);
+//    dr.fw.writeOneElementToFile(DIVISION_PREVIOUS, 1, locNum, divNum);
 
     next = locNum;
     divisionNext[divNum] = locNum;
-//    df.fw.writeOneElementToFile(DIVISION_NEXT, 1, locNum, divNum);
+//    dr.fw.writeOneElementToFile(DIVISION_NEXT, 1, locNum, divNum);
 
     changeStatus(10); // "rest"
 

@@ -803,7 +803,7 @@ DragonForce& DragonForce::operator=(const DragonForce& rhsDF)
 void DragonForce::setMonarch(void)
 {
     playingAs = fr.findPlayingAs();
-    genArr[playingAs].isPlayer = 1;
+    genArr[playingAs].setPlayer();
     playerName = generalsNameList[playingAs];
     
     return;
@@ -824,17 +824,17 @@ void DragonForce::initCastles(void)
 
     for(int j = 0; j < 171; j++) //filling the castles with generals & captives
     {
-        location = genArr[j].location;
-        genIndex = genArr[j].listIndex;
-        if((genArr[j].fixedLocation) && (location < 34))
+        location = genArr[j].getLocation();
+        genIndex = genArr[j].getListIndex();
+        if((genArr[j].getFixedLocation()) && (location < 34))
         {
-            if(genArr[j].fieldStatus1 == 3)
+            if(genArr[j].getFieldStatus1() == 3)
             {
                 casArr[location].addGeneral_init(genIndex);
-                if(genArr[j].fieldStatus2 == 2)
+                if(genArr[j].getFieldStatus2() == 2)
                     casArr[location].setLeader(genIndex);
             }
-            if(genArr[j].fieldStatus1 == 4)
+            if(genArr[j].getFieldStatus1() == 4)
                 casArr[location].addCaptive_init(genIndex);
         }
     }
@@ -851,13 +851,13 @@ void DragonForce::initCastles(void)
         castleLevel[i] == 0 ?
             (casArr[i].setTroopCount(0)) :
             (casArr[i].setTroopCount(castleCurrentTroops[i])); //this part necessary to fix level 0 castles; i.e. magicka
-        casArr[i].setMaxTroops((casArr[i].level + 5) * 10);
-        casArr[i].setExpNext(casArr[i].level * 1200);
+        casArr[i].setMaxTroops((casArr[i].getLevel() + 5) * 10);
+        casArr[i].setExpNext(casArr[i].getLevel() * 1200);
         casArr[i].setXCoordinate(locationCoordinates[i][0]);
         casArr[i].setYCoordinate(locationCoordinates[i][1]);
     }
-    if((genArr[playingAs].fieldStatus1 == 3) && (genArr[playingAs].fieldStatus2 == 2))
-        casArr[genArr[playingAs].location].setHasMonarch(true);
+    if((genArr[playingAs].getFieldStatus1() == 3) && (genArr[playingAs].getFieldStatus2() == 2))
+        casArr[genArr[playingAs].getLocation()].setHasMonarch(true);
 
     return;
 }
@@ -869,20 +869,20 @@ void DragonForce::initDivisions(void)
 
     for(int i = 0; i < 171; i++)
     {
-        division = genArr[i].location;
-        genIndex = genArr[i].listIndex;
-        if(!genArr[i].fixedLocation)
+        division = genArr[i].getLocation();
+        genIndex = genArr[i].getListIndex();
+        if(!genArr[i].getFixedLocation())
         {
-            if(genArr[i].fieldStatus1 == 3)
+            if(genArr[i].getFieldStatus1() == 3)
             {
                 divArr[division].addMember_init(genIndex);
-                if(genArr[i].fieldStatus2 == 1)
+                if(genArr[i].getFieldStatus2() == 1)
                     divArr[division].setLeader(genIndex);
             }
-            if(genArr[i].fieldStatus1 == 4)
+            if(genArr[i].getFieldStatus1() == 4)
                 divArr[division].addCaptive_init(genIndex);
 
-            if(genArr[i].isPlayer)
+            if(genArr[i].isPlayer())
                 divArr[division].setHasPlayer(true);
 
             divArr[division].setRuler(officerOwner[i]);
@@ -901,8 +901,8 @@ void DragonForce::initDivisions(void)
     for(int i = 0; i < 171; i++)
     {
         if(activeDivisions[i])
-            for(int j = 0; j < divArr[i].numMembers; j++)
-                divArr[i].troopCount += genArr[divArr[i].members[j]].currentTroopCount;
+            for(int j = 0; j < divArr[i].getNumMembers(); j++)
+                divArr[i].setTroopCount(divArr[i].getTroopCount() + genArr[divArr[i].members[j]].getCurrTroopCount());
     }
 
     return;
@@ -970,15 +970,15 @@ void DragonForce::initKingdoms(void)
         genOwner = officerOwner[i];
         if(genOwner < 8)
         {
-            if(genArr[i].fieldStatus1 == 3) //if a general in this kingdom
+            if(genArr[i].getFieldStatus1() == 3) //if a general in this kingdom
             {
                 genCount = kingdoms[genOwner].numGenerals;
                 kingdoms[genOwner].ownedGenerals[genCount] = i;
                 kingdoms[genOwner].numGenerals++;
-                kingdoms[genOwner].kingdomWins   += genArr[i].newWins;
-                kingdoms[genOwner].kingdomLosses += genArr[i].newLosses;
+                kingdoms[genOwner].kingdomWins   += genArr[i].getNewWins();
+                kingdoms[genOwner].kingdomLosses += genArr[i].getNewLosses();
             }
-            if(genArr[i].fieldStatus1 == 4) //if captive of this kingdom
+            if(genArr[i].getFieldStatus1() == 4) //if captive of this kingdom
             {
                 genCount = kingdoms[genOwner].numCaptives;
                 kingdoms[genOwner].ownedCaptives[genCount] = i;
@@ -994,7 +994,7 @@ void DragonForce::findActiveDiv(void)
 {
     for(int i = 0; i < 171; i++)
     {
-        if(!(genArr[i].fixedLocation))               //if the general's location isn't fixed, they are marching
+        if(!(genArr[i].getFixedLocation()))               //if the general's location isn't fixed, they are marching
             activeDivisions[locationNumBuff[i]] = 1; //ex: if their location is 5, division number 5 is marked active
     }
 
@@ -1004,7 +1004,7 @@ void DragonForce::findActiveDiv(void)
 void DragonForce::findNewRulers(const int oldRuler)
 {
     for(int i = 0; i < 34; i++)
-        if(casArr[i].ruler == oldRuler)
+        if(casArr[i].getRuler() == oldRuler)
             casArr[i].changeRuler(casArr[i].generals[0]);
 
     return;
@@ -1094,7 +1094,7 @@ void DragonForce::insertionSort( int* const arr, const int size ) //standard ins
 
 void DragonForce::setFileName(string fileName)
 {
-    drFileName = saveFileName;
+    drFileName = fileName;
     fr = FileReader(fileName);
     fw = FileWriter(fileName);
 
@@ -1106,4 +1106,9 @@ void DragonForce::readFile(void)
     fr.readFile();
 
     return;
+}
+
+int DragonForce::writeOneElementToFile (int address, int bytes, ushort newValue, int index)
+{
+    return fw.writeOneElementToFile(address, bytes, newValue, index);
 }

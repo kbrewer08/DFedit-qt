@@ -259,6 +259,7 @@ private:
     FileReader fr;
     FileWriter fw;
 
+public:
     General  genArr[171];
     Castle   casArr[34];
     Division divArr[171];
@@ -285,6 +286,7 @@ public:
 
 //getters
     bool   isBigEndian    (void)      const {return bigEndian;}
+    int    getPlayingAs   (void)      const {return playingAs;}
     string getPlayerName  (void)      const {return playerName;}
     string getGeneralName (int index) const {return generalsNameList[index];}
 
@@ -294,12 +296,13 @@ public:
     void setFileName   (string fileName);
 
 //misc functions
-    void readFile      (void);
-    void findActiveDiv (void);
-    void findNewRulers (const int oldRuler);
-    void addItemsInv   (const int* const items, const int count);
-    void delItemsInv   (const int* const items, const int count);
-    void insertionSort ( int* const arr, const int size );
+    void readFile              (void);
+    void findActiveDiv         (void);
+    void findNewRulers         (const int oldRuler);
+    void addItemsInv           (const int* const items, const int count);
+    void delItemsInv           (const int* const items, const int count);
+    void insertionSort         ( int* const arr, const int size );
+    int  writeOneElementToFile (int address, int bytes, ushort newValue, int index);
     
     ushort packByte   (ushort highNibble, ushort lowNibble);
     ushort rotateLeft (ushort num, const int bits); // listing 12 at this link for endian-independent code http://www.ibm.com/developerworks/aix/library/au-endianc/

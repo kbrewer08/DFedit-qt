@@ -16,7 +16,7 @@ private:
 
 public:
     FileReader (void) : savefileName("") {}
-    FileReader (char filename[]) :  savefileName(filename) {}
+    FileReader (string filename) :  savefileName(filename) {}
     ~FileReader(void) {}
 
     FileReader(const FileReader& rhsFR);

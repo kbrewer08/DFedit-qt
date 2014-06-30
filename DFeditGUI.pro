@@ -44,3 +44,7 @@ HEADERS  += \
     implementation/FileReader.h \
     implementation/FileWriter.h \
     implementation/General.h
+
+OTHER_FILES +=
+
+RESOURCES +=
