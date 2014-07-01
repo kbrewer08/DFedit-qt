@@ -16,7 +16,7 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     mainLayout->addLayout(topLayout, 0, 0);
     mainLayout->addLayout(bottomLayout, 1, 0);
 
-    basicsGroupBox     = new QGroupBox(tr("Basics"), this);
+    basicsGroupBox     = new QGroupBox(tr("Basics"));
     troopsGroupBox     = new QGroupBox(tr("Troops"));
     weaknessesGroupBox = new QGroupBox(tr("Weakness Against"));
     locationGroupBox   = new QGroupBox(tr("Location Editing"));
@@ -45,52 +45,91 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     escapeEditBox          = new QLineEdit();
     spellTierComboBox      = new QComboBox();
     equippedItemComboBox   = new QComboBox();
-    SearchFortifyCheckBox  = new QCheckBox(tr("Searched/Fortified"));
+    searchFortifyCheckBox  = new QCheckBox(tr("Searched/Fortified"));
 
-    for(int i = 0; i < 171; i++){
-        genNamesComboBox->addItem(QString(dr.getGeneralName(i).c_str()));
-        ownerNamesComboBox->addItem(QString(dr.getGeneralName(i).c_str()));
-    }
+    ownerSetButton         = new QPushButton(tr("Set"));
+    levelSetButton         = new QPushButton(tr("Set"));
+    expSetButton           = new QPushButton(tr("Set"));
+    currHpSetButton        = new QPushButton(tr("Set"));
+    maxHpSetButton         = new QPushButton(tr("Set"));
+    currMpSetButton        = new QPushButton(tr("Set"));
+    maxMpSetButton         = new QPushButton(tr("Set"));
+    strSetButton           = new QPushButton(tr("Set"));
+    comSetButton           = new QPushButton(tr("Set"));
+    intSetButton           = new QPushButton(tr("Set"));
+    livesSetButton         = new QPushButton(tr("Set"));
+    loyaltySetButton       = new QPushButton(tr("Set"));
+    winsSetButton          = new QPushButton(tr("Set"));
+    lossesSetButton        = new QPushButton(tr("Set"));
+    meritsSetButton        = new QPushButton(tr("Set"));
+    escapeSetButton        = new QPushButton(tr("Set"));
+    spellTierSetButton     = new QPushButton(tr("Set"));
+    equippedItemSetButton  = new QPushButton(tr("Set"));
+    searchFortifySetButton = new QPushButton(tr("Set"));
+
     basicsLayout->addWidget(new QLabel("General"), 0, 0);
     basicsLayout->addWidget(genNamesComboBox, 0, 1);
     basicsLayout->addWidget(new QLabel("Owner"), 1, 0);
     basicsLayout->addWidget(ownerNamesComboBox, 1, 1);
+    basicsLayout->addWidget(ownerSetButton, 1, 2);
     basicsLayout->addWidget(new QLabel("Level"), 2, 0);
     basicsLayout->addWidget(levelEditBox, 2, 1);
+    basicsLayout->addWidget(levelSetButton, 2, 2);
     basicsLayout->addWidget(new QLabel("Experience"), 3, 0);
     basicsLayout->addWidget(expEditBox, 3, 1);
-    basicsLayout->addWidget(new QLabel("HP"), 4, 0);
+    basicsLayout->addWidget(expSetButton, 3, 2);
+    basicsLayout->addWidget(new QLabel("Current HP"), 4, 0);
     basicsLayout->addWidget(currHpEditBox, 4, 1);
-    basicsLayout->addWidget(new QLabel("MP"), 5, 0);
-    basicsLayout->addWidget(currMpEditBox, 5, 1);
-    basicsLayout->addWidget(new QLabel("Strength"), 6, 0);
-    basicsLayout->addWidget(strEditBox, 6, 1);
-    basicsLayout->addWidget(new QLabel("Command"), 7, 0);
-    basicsLayout->addWidget(comEditBox, 7, 1);
-    basicsLayout->addWidget(new QLabel("Intelligence"), 8, 0);
-    basicsLayout->addWidget(intEditBox, 8, 1);
+    basicsLayout->addWidget(currHpSetButton, 4, 2);
+    basicsLayout->addWidget(new QLabel("Max HP"), 5, 0);
+    basicsLayout->addWidget(maxHpEditBox, 5, 1);
+    basicsLayout->addWidget(maxHpSetButton, 5, 2);
+    basicsLayout->addWidget(new QLabel("Current MP"), 6, 0);
+    basicsLayout->addWidget(currMpEditBox, 6, 1);
+    basicsLayout->addWidget(currMpSetButton, 6, 2);
+    basicsLayout->addWidget(new QLabel("Max MP"), 7, 0);
+    basicsLayout->addWidget(maxMpEditBox, 7, 1);
+    basicsLayout->addWidget(maxMpSetButton, 7, 2);
+    basicsLayout->addWidget(new QLabel("Strength"), 8, 0);
+    basicsLayout->addWidget(strEditBox, 8, 1);
+    basicsLayout->addWidget(strSetButton, 8, 2);
+    basicsLayout->addWidget(new QLabel("Command"), 9, 0);
+    basicsLayout->addWidget(comEditBox, 9, 1);
+    basicsLayout->addWidget(comSetButton, 9, 2);
+    basicsLayout->addWidget(new QLabel("Intelligence"), 10, 0);
+    basicsLayout->addWidget(intEditBox, 10, 1);
+    basicsLayout->addWidget(intSetButton, 10, 2);
 
-    basicsLayout->addWidget(new QLabel("Lives"), 0, 3);
-    basicsLayout->addWidget(livesEditBox, 0, 4);
-    basicsLayout->addWidget(new QLabel("Loyalty"), 1, 3);
-    basicsLayout->addWidget(loyaltyEditBox, 1, 4);
-    basicsLayout->addWidget(new QLabel("Wins"), 2, 3);
-    basicsLayout->addWidget(winsEditBox, 2, 4);
-    basicsLayout->addWidget(new QLabel("Losses"), 3, 3);
-    basicsLayout->addWidget(lossesEditBox, 3, 4);
-    basicsLayout->addWidget(new QLabel("Merits"), 4, 3);
-    basicsLayout->addWidget(meritsEditBox, 4, 4);
-    basicsLayout->addWidget(new QLabel("Escape"), 5, 3);
-    basicsLayout->addWidget(escapeEditBox, 5, 4);
-    basicsLayout->addWidget(new QLabel("Spell Tier"), 6, 3);
-    basicsLayout->addWidget(spellTierComboBox, 6, 4);
-    basicsLayout->addWidget(new QLabel("Equipped Item"), 7, 3);
-    basicsLayout->addWidget(equippedItemComboBox, 7, 4);
-    basicsLayout->addWidget(SearchFortifyCheckBox, 8, 3);
+    basicsLayout->addWidget(new QLabel("Lives"), 0, 4);
+    basicsLayout->addWidget(livesEditBox, 0, 5);
+    basicsLayout->addWidget(livesSetButton, 0, 6);
+    basicsLayout->addWidget(new QLabel("Loyalty"), 1, 4);
+    basicsLayout->addWidget(loyaltyEditBox, 1, 5);
+    basicsLayout->addWidget(loyaltySetButton, 1, 6);
+    basicsLayout->addWidget(new QLabel("Wins"), 2, 4);
+    basicsLayout->addWidget(winsEditBox, 2, 5);
+    basicsLayout->addWidget(winsSetButton, 2, 6);
+    basicsLayout->addWidget(new QLabel("Losses"), 3, 4);
+    basicsLayout->addWidget(lossesEditBox, 3, 5);
+    basicsLayout->addWidget(lossesSetButton, 3, 6);
+    basicsLayout->addWidget(new QLabel("Merits"), 4, 4);
+    basicsLayout->addWidget(meritsEditBox, 4, 5);
+    basicsLayout->addWidget(meritsSetButton, 4, 6);
+    basicsLayout->addWidget(new QLabel("Escape"), 5, 4);
+    basicsLayout->addWidget(escapeEditBox, 5, 5);
+    basicsLayout->addWidget(escapeSetButton, 5, 6);
+    basicsLayout->addWidget(new QLabel("Spell Tier"), 6, 4);
+    basicsLayout->addWidget(spellTierComboBox, 6, 5);
+    basicsLayout->addWidget(spellTierSetButton, 6, 6);
+    basicsLayout->addWidget(new QLabel("Equipped Item"), 7, 4);
+    basicsLayout->addWidget(equippedItemComboBox, 7, 5);
+    basicsLayout->addWidget(equippedItemSetButton, 7, 6);
+    basicsLayout->addWidget(searchFortifyCheckBox, 8, 4);
+    basicsLayout->addWidget(searchFortifySetButton, 8, 6);
 
     basicsLayout->setRowStretch(1000, 1000);
     basicsLayout->setColumnStretch(1000, 1000);
-    basicsLayout->setColumnMinimumWidth(2, 30);
+    basicsLayout->setColumnMinimumWidth(3, 30);
     basicsGroupBox->setLayout(basicsLayout);
     topLayout->addWidget(basicsGroupBox, 0, 0);
 
@@ -102,18 +141,31 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     lightWeakEditBox = new QLineEdit();
     darkWeakEditBox  = new QLineEdit();
 
+    troopAttackSetButton = new QPushButton(tr("Set"));
+    swordMagicSetButton  = new QPushButton(tr("Set"));
+    iceMagicSetButton    = new QPushButton(tr("Set"));
+    fireMagicSetButton   = new QPushButton(tr("Set"));
+    lightMagicSetButton  = new QPushButton(tr("Set"));
+    darkMagicSetButton   = new QPushButton(tr("Set"));
+
     weaknessLayout->addWidget(new QLabel("Troop Attacks"), 0, 0);
     weaknessLayout->addWidget(troopWeakEditBox, 0, 1);
+    weaknessLayout->addWidget(troopAttackSetButton, 0, 2);
     weaknessLayout->addWidget(new QLabel("Sword Magic"), 1, 0);
     weaknessLayout->addWidget(swordWeakEditBox, 1, 1);
+    weaknessLayout->addWidget(swordMagicSetButton, 1, 2);
     weaknessLayout->addWidget(new QLabel("Ice Magic"), 2, 0);
     weaknessLayout->addWidget(iceWeakEditBox, 2, 1);
+    weaknessLayout->addWidget(iceMagicSetButton, 2, 2);
     weaknessLayout->addWidget(new QLabel("Fire Magic"), 3, 0);
     weaknessLayout->addWidget(fireWeakEditBox, 3, 1);
+    weaknessLayout->addWidget(fireMagicSetButton, 3, 2);
     weaknessLayout->addWidget(new QLabel("Light Magic"), 4, 0);
     weaknessLayout->addWidget(lightWeakEditBox, 4, 1);
+    weaknessLayout->addWidget(lightMagicSetButton, 4, 2);
     weaknessLayout->addWidget(new QLabel("Dark Magic"), 5, 0);
     weaknessLayout->addWidget(darkWeakEditBox, 5, 1);
+    weaknessLayout->addWidget(darkMagicSetButton, 5, 2);
 
     weaknessLayout->setRowStretch(1000, 1000);
     weaknessLayout->setColumnStretch(1000, 1000);
@@ -157,30 +209,55 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     dragonMedalsComboBox  = new QComboBox();
     zombieMedalsComboBox  = new QComboBox();
 
+    troopTypeSetButton     = new QPushButton(tr("Set"));
+    troopAmountSetButton   = new QPushButton(tr("Set"));
+    soldierMedalsSetButton = new QPushButton(tr("Set"));
+    cavalryMedalsSetButton = new QPushButton(tr("Set"));
+    mageMedalsSetButton    = new QPushButton(tr("Set"));
+    samuraiMedalsSetButton = new QPushButton(tr("Set"));
+    archerMedalsSetButton  = new QPushButton(tr("Set"));
+    monkMedalsSetButton    = new QPushButton(tr("Set"));
+    harpyMedalsSetButton   = new QPushButton(tr("Set"));
+    beastMedalsSetButton   = new QPushButton(tr("Set"));
+    dragonMedalsSetButton  = new QPushButton(tr("Set"));
+    zombieMedalsSetButton  = new QPushButton(tr("Set"));
+
     troopsLayout->addWidget(new QLabel(tr("Troop Type")), 0, 0);
     troopsLayout->addWidget(troopTypeComboBox, 0, 1);
+    troopsLayout->addWidget(troopTypeSetButton, 0, 2);
     troopsLayout->addWidget(new QLabel(tr("# of Troops")), 1, 0);
     troopsLayout->addWidget(troopAmountEditBox, 1, 1);
+    troopsLayout->addWidget(troopAmountSetButton, 1, 2);
     troopsLayout->addWidget(new QLabel(tr("Soldier")), 3, 0);
     troopsLayout->addWidget(soldierMedalsComboBox, 3, 1);
+    troopsLayout->addWidget(soldierMedalsSetButton, 3, 2);
     troopsLayout->addWidget(new QLabel(tr("Cavalry")), 4, 0);
     troopsLayout->addWidget(cavalryMedalsComboBox, 4, 1);
+    troopsLayout->addWidget(cavalryMedalsSetButton, 4, 2);
     troopsLayout->addWidget(new QLabel(tr("Mage")), 5, 0);
     troopsLayout->addWidget(mageMedalsComboBox, 5, 1);
+    troopsLayout->addWidget(mageMedalsSetButton, 5, 2);
     troopsLayout->addWidget(new QLabel(tr("Samurai")), 6, 0);
     troopsLayout->addWidget(samuraiMedalsComboBox, 6, 1);
+    troopsLayout->addWidget(samuraiMedalsSetButton, 6, 2);
     troopsLayout->addWidget(new QLabel(tr("Archer")), 7, 0);
     troopsLayout->addWidget(archerMedalsComboBox, 7, 1);
+    troopsLayout->addWidget(archerMedalsSetButton, 7, 2);
     troopsLayout->addWidget(new QLabel(tr("Monk")), 8, 0);
     troopsLayout->addWidget(monkMedalsComboBox, 8, 1);
+    troopsLayout->addWidget(monkMedalsSetButton, 8, 2);
     troopsLayout->addWidget(new QLabel(tr("Harpy")), 9, 0);
     troopsLayout->addWidget(harpyMedalsComboBox, 9, 1);
+    troopsLayout->addWidget(harpyMedalsSetButton, 9, 2);
     troopsLayout->addWidget(new QLabel(tr("Beast")), 10, 0);
     troopsLayout->addWidget(beastMedalsComboBox, 10, 1);
+    troopsLayout->addWidget(beastMedalsSetButton, 10, 2);
     troopsLayout->addWidget(new QLabel(tr("Dragon")), 11, 0);
     troopsLayout->addWidget(dragonMedalsComboBox, 11, 1);
+    troopsLayout->addWidget(dragonMedalsSetButton, 11, 2);
     troopsLayout->addWidget(new QLabel(tr("Zombie")), 12, 0);
     troopsLayout->addWidget(zombieMedalsComboBox, 12, 1);
+    troopsLayout->addWidget(zombieMedalsSetButton, 12, 2);
 
     troopsLayout->setRowStretch(1000, 1000);
     troopsLayout->setColumnStretch(1000, 1000);
@@ -195,6 +272,10 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     hiddenLocRadioButton   = new QRadioButton(tr("Hidden"));;
     divisionLocRadioButton = new QRadioButton(tr("Division"));;
 
+    castleLocSetButton = new QPushButton(tr("Set"));
+    hiddenLocSetButton = new QPushButton(tr("Set"));
+
+
     QButtonGroup* locationRadioGroup = new QButtonGroup();
     locationRadioGroup->addButton(castleLocRadioButton);
     locationRadioGroup->addButton(hiddenLocRadioButton);
@@ -203,8 +284,10 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     QGridLayout* locFixedLayout = new QGridLayout();
     locFixedLayout->addWidget(castleLocRadioButton, 0, 0);
     locFixedLayout->addWidget(castleLocComboBox, 0, 1);
+    locFixedLayout->addWidget(castleLocSetButton, 0, 2);
     locFixedLayout->addWidget(hiddenLocRadioButton, 1, 0);
     locFixedLayout->addWidget(hiddenLocComboBox, 1, 1);
+    locFixedLayout->addWidget(hiddenLocSetButton, 1, 2);
     locFixedGroupBox->setLayout(locFixedLayout);
 
     divRulerLabel          = new QLabel(tr("Ruler:"));
@@ -287,30 +370,89 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     atkPlusEditBox   = new QLineEdit();
     defPlusEditBox   = new QLineEdit();
 
+    nActionSetButton   = new QPushButton(tr("Set"));
+    bActionSetButton   = new QPushButton(tr("Set"));
+    btlActionSetButton = new QPushButton(tr("Set"));
+    moralSetButton     = new QPushButton(tr("Set"));
+    warlikeSetButton   = new QPushButton(tr("Set"));
+    negoSetButton      = new QPushButton(tr("Set"));
+    atkPlusSetButton   = new QPushButton(tr("Set"));
+    defPlusSetButton   = new QPushButton(tr("Set"));
+
     unknownsLayout->addWidget(new QLabel("n_action"), 0, 0);
     unknownsLayout->addWidget(nActionEditBox, 0, 1);
+    unknownsLayout->addWidget(nActionSetButton, 0, 2);
     unknownsLayout->addWidget(new QLabel(tr("b_action")), 1, 0);
     unknownsLayout->addWidget(bActionEditBox, 1, 1);
+    unknownsLayout->addWidget(bActionSetButton, 1, 2);
     unknownsLayout->addWidget(new QLabel(tr("btl_action")), 2, 0);
     unknownsLayout->addWidget(btlActionEditBox, 2, 1);
+    unknownsLayout->addWidget(btlActionSetButton, 2, 2);
     unknownsLayout->addWidget(new QLabel(tr("moral")), 3, 0);
     unknownsLayout->addWidget(moralEditBox, 3, 1);
+    unknownsLayout->addWidget(moralSetButton, 3, 2);
     unknownsLayout->addWidget(new QLabel(tr("warlike")), 4, 0);
     unknownsLayout->addWidget(warlikeEditBox, 4, 1);
+    unknownsLayout->addWidget(warlikeSetButton, 4, 2);
     unknownsLayout->addWidget(new QLabel(tr("nego")), 5, 0);
     unknownsLayout->addWidget(negoEditBox, 5, 1);
+    unknownsLayout->addWidget(negoSetButton, 5, 2);
     unknownsLayout->addWidget(new QLabel(tr("atkplus")), 6, 0);
     unknownsLayout->addWidget(atkPlusEditBox, 6, 1);
+    unknownsLayout->addWidget(atkPlusSetButton, 6, 2);
     unknownsLayout->addWidget(new QLabel(tr("defplus")), 7, 0);
     unknownsLayout->addWidget(defPlusEditBox, 7, 1);
+    unknownsLayout->addWidget(defPlusSetButton, 7, 2);
 
     unknownsLayout->setRowStretch(1000, 1000);
     unknownsLayout->setColumnStretch(1000, 1000);
     unknownsGroupBox->setLayout(unknownsLayout);
     bottomLayout->addWidget(unknownsGroupBox, 0, 2);
+
+    initComboBoxes();
 }
 
 GeneralsTab::~GeneralsTab()
 {
     
+}
+
+void GeneralsTab::initComboBoxes(void)
+{
+    for(int i = 0; i < 171; i++){
+        genNamesComboBox->addItem(QString::fromStdString(dr.getGeneralName(i)));
+        ownerNamesComboBox->addItem(QString::fromStdString(dr.getGeneralName(i)));
+    }
+
+    for(int i = 0; i < 4; i++){
+        spellTierComboBox->addItem(QString::number(i));
+    }
+
+    for(int i = 0; i < 73; i++){
+        equippedItemComboBox->addItem(QString(itemList[i]));
+    }
+
+    for(int i = 0; i < 11; i++){
+        troopTypeComboBox->addItem(troopType[i]);
+        soldierMedalsComboBox->addItem(QString::number(i));
+        cavalryMedalsComboBox->addItem(QString::number(i));
+        mageMedalsComboBox->addItem(QString::number(i));
+        samuraiMedalsComboBox->addItem(QString::number(i));
+        archerMedalsComboBox->addItem(QString::number(i));
+        monkMedalsComboBox->addItem(QString::number(i));
+        harpyMedalsComboBox->addItem(QString::number(i));
+        beastMedalsComboBox->addItem(QString::number(i));
+        dragonMedalsComboBox->addItem(QString::number(i));
+        zombieMedalsComboBox->addItem(QString::number(i));
+    }
+
+    for(int i = 0; i < 35; i++){
+        castleLocComboBox->addItem(QString(castlesNameList[i]));
+    }
+
+    hiddenLocComboBox->addItem(QString::fromStdString("No"));
+    hiddenLocComboBox->addItem(QString::fromStdString("Site 62"));
+    hiddenLocComboBox->addItem(QString::fromStdString("Site 127"));
+
+    return;
 }

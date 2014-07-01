@@ -20,8 +20,7 @@ MainContentHolder::MainContentHolder(QWidget* parent)
     setCentralWidget(centralWidget);
     createMenuBar();
 
-    resize(900, 600);
-    
+    setFont(QFont("Arial", 8));
     setWindowTitle(getDfeVersion().c_str());
 }
 

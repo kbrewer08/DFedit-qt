@@ -12,6 +12,8 @@ public:
              ~GeneralsTab();
 
 private:
+    void initComboBoxes (void);
+
     QGroupBox* basicsGroupBox;
     QGroupBox* troopsGroupBox;
     QGroupBox* weaknessesGroupBox;
@@ -41,7 +43,27 @@ private:
     QLineEdit* escapeEditBox;
     QComboBox* spellTierComboBox;
     QComboBox* equippedItemComboBox;
-    QCheckBox* SearchFortifyCheckBox;
+    QCheckBox* searchFortifyCheckBox;
+
+    QPushButton* ownerSetButton;
+    QPushButton* levelSetButton;
+    QPushButton* expSetButton;
+    QPushButton* currHpSetButton;
+    QPushButton* maxHpSetButton;
+    QPushButton* currMpSetButton;
+    QPushButton* maxMpSetButton;
+    QPushButton* strSetButton;
+    QPushButton* comSetButton;
+    QPushButton* intSetButton;
+    QPushButton* livesSetButton;
+    QPushButton* loyaltySetButton;
+    QPushButton* winsSetButton;
+    QPushButton* lossesSetButton;
+    QPushButton* meritsSetButton;
+    QPushButton* escapeSetButton;
+    QPushButton* spellTierSetButton;
+    QPushButton* equippedItemSetButton;
+    QPushButton* searchFortifySetButton;
 
 //weaknesses
     QLineEdit* troopWeakEditBox;
@@ -50,7 +72,14 @@ private:
     QLineEdit* fireWeakEditBox;
     QLineEdit* lightWeakEditBox;
     QLineEdit* darkWeakEditBox;
-    
+
+    QPushButton* troopAttackSetButton;
+    QPushButton* swordMagicSetButton;
+    QPushButton* iceMagicSetButton;
+    QPushButton* fireMagicSetButton;
+    QPushButton* lightMagicSetButton;
+    QPushButton* darkMagicSetButton;
+
 //status
     QLabel* indexValue;
     QLabel* portraitValue;
@@ -71,6 +100,19 @@ private:
     QComboBox* beastMedalsComboBox;
     QComboBox* dragonMedalsComboBox;
     QComboBox* zombieMedalsComboBox;
+
+    QPushButton* troopTypeSetButton;
+    QPushButton* troopAmountSetButton;
+    QPushButton* soldierMedalsSetButton;
+    QPushButton* cavalryMedalsSetButton;
+    QPushButton* mageMedalsSetButton;
+    QPushButton* samuraiMedalsSetButton;
+    QPushButton* archerMedalsSetButton;
+    QPushButton* monkMedalsSetButton;
+    QPushButton* harpyMedalsSetButton;
+    QPushButton* beastMedalsSetButton;
+    QPushButton* dragonMedalsSetButton;
+    QPushButton* zombieMedalsSetButton;
 
 //location edit
     QGridLayout*  divisionStatusLayout;
@@ -106,6 +148,9 @@ private:
     QLabel*       divCaptivesLabel;
     QLabel*       divCaptivesValue;
 
+    QPushButton* castleLocSetButton;
+    QPushButton* hiddenLocSetButton;
+
 //unknowns
     QLineEdit* nActionEditBox;
     QLineEdit* bActionEditBox;
@@ -115,6 +160,15 @@ private:
     QLineEdit* negoEditBox;
     QLineEdit* atkPlusEditBox;
     QLineEdit* defPlusEditBox;
+
+    QPushButton* nActionSetButton;
+    QPushButton* bActionSetButton;
+    QPushButton* btlActionSetButton;
+    QPushButton* moralSetButton;
+    QPushButton* warlikeSetButton;
+    QPushButton* negoSetButton;
+    QPushButton* atkPlusSetButton;
+    QPushButton* defPlusSetButton;
 };
 
 #endif
