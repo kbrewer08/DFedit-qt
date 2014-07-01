@@ -8,8 +8,8 @@ DFeditGUI::DFeditGUI(QString inFile, QWidget* parent)
     dfTab->addTab(new CastlesTab(),   tr("Castles"));
     dfTab->addTab(new DivisionsTab(), tr("Divisions"));
     dfTab->addTab(new MassEditTab(),  tr("Mass Editing"));
-    dfTab->addTab(new KingdomsTab(),  tr("Kingdoms"));
     dfTab->addTab(new ItemsTab(),     tr("Items"));
+    dfTab->addTab(new KingdomsTab(),  tr("Kingdoms"));
 
     layout = new QGridLayout(this);
     layout->addWidget(dfTab);

@@ -72,7 +72,7 @@ void MainContentHolder::createMenuBar(void)
 {
     QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(tr("&Open a save file..."), this, SLOT(openFile()), QKeySequence(tr("Ctrl+O")));
-    fileMenu->addAction(tr("&Reload"), this, SLOT(reloadTab()), QKeySequence(tr("Ctrl+R")));
+    fileMenu->addAction(tr("&Reload Tab"), this, SLOT(reloadTab()), QKeySequence(tr("Ctrl+R")));
     fileMenu->addSeparator();
     fileMenu->addAction(tr("&Quit"), this, SLOT(close()), QKeySequence(tr("Ctrl+Q")));
 

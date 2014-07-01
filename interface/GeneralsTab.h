@@ -17,6 +17,8 @@ private:
     QGroupBox* weaknessesGroupBox;
     QGroupBox* statusGroupBox;
     QGroupBox* locationGroupBox;
+    QGroupBox* locFixedGroupBox;
+    QGroupBox* divisionGroupBox;
     QGroupBox* unknownsGroupBox;
 
 //basics
@@ -69,6 +71,50 @@ private:
     QComboBox* beastMedalsComboBox;
     QComboBox* dragonMedalsComboBox;
     QComboBox* zombieMedalsComboBox;
+
+//location edit
+    QGridLayout*  divisionStatusLayout;
+    QComboBox*    castleLocComboBox;
+    QComboBox*    hiddenLocComboBox;
+    QRadioButton* castleLocRadioButton;
+    QRadioButton* hiddenLocRadioButton;
+    QRadioButton* divisionLocRadioButton;
+    QLabel*       divRulerLabel;
+    QLabel*       divRulerValue;
+    QLabel*       divLeaderLabel;
+    QLabel*       divLeaderValue;
+    QLabel*       divXLabel;
+    QLabel*       divXValue;
+    QLabel*       divYLabel;
+    QLabel*       divYValue;
+    QLabel*       divOriginLabel;
+    QLabel*       divOriginValue;
+    QLabel*       divGoalLabel;
+    QLabel*       divGoalValue;
+    QLabel*       divPrevLabel;
+    QLabel*       divPrevValue;
+    QLabel*       divNextLabel;
+    QLabel*       divNextValue;
+    QLabel*       divNumberLabel;
+    QLabel*       divNumberValue;
+    QLabel*       divStatusLabel;
+    QLabel*       divStatusValue;
+    QLabel*       divTroopsLabel;
+    QLabel*       divTroopsValue;
+    QLabel*       divMembersLabel;
+    QLabel*       divMembersValue;
+    QLabel*       divCaptivesLabel;
+    QLabel*       divCaptivesValue;
+
+//unknowns
+    QLineEdit* nActionEditBox;
+    QLineEdit* bActionEditBox;
+    QLineEdit* btlActionEditBox;
+    QLineEdit* moralEditBox;
+    QLineEdit* warlikeEditBox;
+    QLineEdit* negoEditBox;
+    QLineEdit* atkPlusEditBox;
+    QLineEdit* defPlusEditBox;
 };
 
 #endif

@@ -4,7 +4,7 @@
 #include "DFeditGUI.h"
 #include "implementation/DragonForce.h"
 
-#define DFEDIT_VERSION "2.5"
+#define DFEDIT_VERSION "3.0"
 
 class MainContentHolder : public QMainWindow
 {

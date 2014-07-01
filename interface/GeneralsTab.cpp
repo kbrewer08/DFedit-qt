@@ -4,6 +4,8 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     : QWidget(parent)
 {
     QGridLayout* mainLayout     = new QGridLayout(this);
+    QGridLayout* topLayout      = new QGridLayout();
+    QGridLayout* bottomLayout   = new QGridLayout();
     QGridLayout* basicsLayout   = new QGridLayout();
     QGridLayout* weaknessLayout = new QGridLayout();
     QGridLayout* statusLayout   = new QGridLayout();
@@ -11,10 +13,15 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     QGridLayout* locationLayout = new QGridLayout();
     QGridLayout* unknownsLayout = new QGridLayout();
 
+    mainLayout->addLayout(topLayout, 0, 0);
+    mainLayout->addLayout(bottomLayout, 1, 0);
+
     basicsGroupBox     = new QGroupBox(tr("Basics"), this);
-    troopsGroupBox     = new QGroupBox(tr("Medals"));
+    troopsGroupBox     = new QGroupBox(tr("Troops"));
     weaknessesGroupBox = new QGroupBox(tr("Weakness Against"));
     locationGroupBox   = new QGroupBox(tr("Location Editing"));
+    locFixedGroupBox   = new QGroupBox();
+    divisionGroupBox   = new QGroupBox();
     statusGroupBox     = new QGroupBox(tr("Status"));
     unknownsGroupBox   = new QGroupBox(tr("Unknown Effects"));
 
@@ -44,7 +51,7 @@ GeneralsTab::GeneralsTab(QWidget *parent)
         genNamesComboBox->addItem(QString(dr.getGeneralName(i).c_str()));
         ownerNamesComboBox->addItem(QString(dr.getGeneralName(i).c_str()));
     }
-    basicsLayout->addWidget(new QLabel("Current General"), 0, 0);
+    basicsLayout->addWidget(new QLabel("General"), 0, 0);
     basicsLayout->addWidget(genNamesComboBox, 0, 1);
     basicsLayout->addWidget(new QLabel("Owner"), 1, 0);
     basicsLayout->addWidget(ownerNamesComboBox, 1, 1);
@@ -82,9 +89,10 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     basicsLayout->addWidget(SearchFortifyCheckBox, 8, 3);
 
     basicsLayout->setRowStretch(1000, 1000);
+    basicsLayout->setColumnStretch(1000, 1000);
     basicsLayout->setColumnMinimumWidth(2, 30);
     basicsGroupBox->setLayout(basicsLayout);
-    mainLayout->addWidget(basicsGroupBox, 0, 0);
+    topLayout->addWidget(basicsGroupBox, 0, 0);
 
 //weaknesses area
     troopWeakEditBox = new QLineEdit();
@@ -108,8 +116,9 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     weaknessLayout->addWidget(darkWeakEditBox, 5, 1);
 
     weaknessLayout->setRowStretch(1000, 1000);
+    weaknessLayout->setColumnStretch(1000, 1000);
     weaknessesGroupBox->setLayout(weaknessLayout);
-    mainLayout->addWidget(weaknessesGroupBox, 0, 1);
+    topLayout->addWidget(weaknessesGroupBox, 0, 1);
 
 //status area
     indexValue    = new QLabel(tr("place holder"));
@@ -130,8 +139,9 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     statusLayout->addWidget(hospitalValue, 4, 1);
 
     statusLayout->setRowStretch(1000, 1000);
+    statusLayout->setColumnStretch(1000, 1000);
     statusGroupBox->setLayout(statusLayout);
-    mainLayout->addWidget(statusGroupBox, 0, 2);
+    topLayout->addWidget(statusGroupBox, 0, 2);
 
 //troops area
     troopTypeComboBox     = new QComboBox();
@@ -151,30 +161,153 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     troopsLayout->addWidget(troopTypeComboBox, 0, 1);
     troopsLayout->addWidget(new QLabel(tr("# of Troops")), 1, 0);
     troopsLayout->addWidget(troopAmountEditBox, 1, 1);
-    troopsLayout->addWidget(new QLabel(tr("Soldier")), 2, 0);
-    troopsLayout->addWidget(soldierMedalsComboBox, 2, 1);
-    troopsLayout->addWidget(new QLabel(tr("Cavalry")), 3, 0);
-    troopsLayout->addWidget(cavalryMedalsComboBox, 3, 1);
-    troopsLayout->addWidget(new QLabel(tr("Mage")), 4, 0);
-    troopsLayout->addWidget(mageMedalsComboBox, 4, 1);
-    troopsLayout->addWidget(new QLabel(tr("Samurai")), 5, 0);
-    troopsLayout->addWidget(samuraiMedalsComboBox, 5, 1);
-    troopsLayout->addWidget(new QLabel(tr("Archer")), 6, 0);
-    troopsLayout->addWidget(archerMedalsComboBox, 6, 1);
-    troopsLayout->addWidget(new QLabel(tr("Monk")), 7, 0);
-    troopsLayout->addWidget(monkMedalsComboBox, 7, 1);
-    troopsLayout->addWidget(new QLabel(tr("Harpy")), 8, 0);
-    troopsLayout->addWidget(harpyMedalsComboBox, 8, 1);
-    troopsLayout->addWidget(new QLabel(tr("Beast")), 9, 0);
-    troopsLayout->addWidget(beastMedalsComboBox, 9, 1);
-    troopsLayout->addWidget(new QLabel(tr("Dragon")), 10, 0);
-    troopsLayout->addWidget(dragonMedalsComboBox, 10, 1);
-    troopsLayout->addWidget(new QLabel(tr("Zombie")), 11, 0);
-    troopsLayout->addWidget(zombieMedalsComboBox, 11, 1);
+    troopsLayout->addWidget(new QLabel(tr("Soldier")), 3, 0);
+    troopsLayout->addWidget(soldierMedalsComboBox, 3, 1);
+    troopsLayout->addWidget(new QLabel(tr("Cavalry")), 4, 0);
+    troopsLayout->addWidget(cavalryMedalsComboBox, 4, 1);
+    troopsLayout->addWidget(new QLabel(tr("Mage")), 5, 0);
+    troopsLayout->addWidget(mageMedalsComboBox, 5, 1);
+    troopsLayout->addWidget(new QLabel(tr("Samurai")), 6, 0);
+    troopsLayout->addWidget(samuraiMedalsComboBox, 6, 1);
+    troopsLayout->addWidget(new QLabel(tr("Archer")), 7, 0);
+    troopsLayout->addWidget(archerMedalsComboBox, 7, 1);
+    troopsLayout->addWidget(new QLabel(tr("Monk")), 8, 0);
+    troopsLayout->addWidget(monkMedalsComboBox, 8, 1);
+    troopsLayout->addWidget(new QLabel(tr("Harpy")), 9, 0);
+    troopsLayout->addWidget(harpyMedalsComboBox, 9, 1);
+    troopsLayout->addWidget(new QLabel(tr("Beast")), 10, 0);
+    troopsLayout->addWidget(beastMedalsComboBox, 10, 1);
+    troopsLayout->addWidget(new QLabel(tr("Dragon")), 11, 0);
+    troopsLayout->addWidget(dragonMedalsComboBox, 11, 1);
+    troopsLayout->addWidget(new QLabel(tr("Zombie")), 12, 0);
+    troopsLayout->addWidget(zombieMedalsComboBox, 12, 1);
 
     troopsLayout->setRowStretch(1000, 1000);
+    troopsLayout->setColumnStretch(1000, 1000);
+    troopsLayout->setRowMinimumHeight(2, 20);
     troopsGroupBox->setLayout(troopsLayout);
-    mainLayout->addWidget(troopsGroupBox, 1, 0);
+    bottomLayout->addWidget(troopsGroupBox, 0, 0);
+
+//location editing area
+    castleLocComboBox      = new QComboBox();
+    hiddenLocComboBox      = new QComboBox();
+    castleLocRadioButton   = new QRadioButton(tr("Castle"));
+    hiddenLocRadioButton   = new QRadioButton(tr("Hidden"));;
+    divisionLocRadioButton = new QRadioButton(tr("Division"));;
+
+    QButtonGroup* locationRadioGroup = new QButtonGroup();
+    locationRadioGroup->addButton(castleLocRadioButton);
+    locationRadioGroup->addButton(hiddenLocRadioButton);
+    locationRadioGroup->addButton(divisionLocRadioButton);
+
+    QGridLayout* locFixedLayout = new QGridLayout();
+    locFixedLayout->addWidget(castleLocRadioButton, 0, 0);
+    locFixedLayout->addWidget(castleLocComboBox, 0, 1);
+    locFixedLayout->addWidget(hiddenLocRadioButton, 1, 0);
+    locFixedLayout->addWidget(hiddenLocComboBox, 1, 1);
+    locFixedGroupBox->setLayout(locFixedLayout);
+
+    divRulerLabel          = new QLabel(tr("Ruler:"));
+    divRulerValue          = new QLabel(tr("Place Holder"));
+    divLeaderLabel         = new QLabel(tr("Leader:"));
+    divLeaderValue         = new QLabel(tr("Place Holder"));
+    divXLabel              = new QLabel(tr("X:"));
+    divXValue              = new QLabel(tr("Place Holder"));
+    divYLabel              = new QLabel(tr("Y:"));
+    divYValue              = new QLabel(tr("Place Holder"));
+    divOriginLabel         = new QLabel(tr("Origin:"));
+    divOriginValue         = new QLabel(tr("Place Holder"));
+    divGoalLabel           = new QLabel(tr("Goal:"));
+    divGoalValue           = new QLabel(tr("Place Holder"));
+    divPrevLabel           = new QLabel(tr("Prev:"));
+    divPrevValue           = new QLabel(tr("Place Holder"));
+    divNextLabel           = new QLabel(tr("Next:"));
+    divNextValue           = new QLabel(tr("Place Holder"));
+    divNumberLabel         = new QLabel(tr("Division ID:"));
+    divNumberValue         = new QLabel(tr("Place Holder"));
+    divStatusLabel         = new QLabel(tr("Status:"));
+    divStatusValue         = new QLabel(tr("Place Holder"));
+    divTroopsLabel         = new QLabel(tr("Troops:"));
+    divTroopsValue         = new QLabel(tr("Place Holder"));
+    divMembersLabel        = new QLabel(tr("Members:"));
+    divMembersValue        = new QLabel(tr("Place Holder"));
+    divCaptivesLabel       = new QLabel(tr("Captives:"));
+    divCaptivesValue       = new QLabel(tr("Place Holder"));
+
+    divisionStatusLayout = new QGridLayout();
+    divisionStatusLayout->addWidget(divisionLocRadioButton, 0, 0);
+    
+    divisionStatusLayout->addWidget(divRulerLabel, 1, 0);
+    divisionStatusLayout->addWidget(divRulerValue, 1, 1);
+    divisionStatusLayout->addWidget(divLeaderLabel, 2, 0);
+    divisionStatusLayout->addWidget(divLeaderValue, 2, 1);
+    divisionStatusLayout->addWidget(divXLabel, 3, 0);
+    divisionStatusLayout->addWidget(divXValue, 3, 1);
+    divisionStatusLayout->addWidget(divYLabel, 4, 0);
+    divisionStatusLayout->addWidget(divYValue, 4, 1);
+    divisionStatusLayout->addWidget(divOriginLabel, 5, 0);
+    divisionStatusLayout->addWidget(divOriginValue, 5, 1);
+    divisionStatusLayout->addWidget(divGoalLabel, 6, 0);
+    divisionStatusLayout->addWidget(divGoalValue, 6, 1);
+    divisionStatusLayout->addWidget(divPrevLabel, 7, 0);
+    divisionStatusLayout->addWidget(divPrevValue, 7, 1);
+    divisionStatusLayout->addWidget(divNextLabel, 8, 0);
+    divisionStatusLayout->addWidget(divNextValue, 8, 1);
+
+    divisionStatusLayout->addWidget(divNumberLabel, 1, 3);
+    divisionStatusLayout->addWidget(divNumberValue, 1, 4);
+    divisionStatusLayout->addWidget(divStatusLabel, 2, 3);
+    divisionStatusLayout->addWidget(divStatusValue, 2, 4);
+    divisionStatusLayout->addWidget(divTroopsLabel, 3, 3);
+    divisionStatusLayout->addWidget(divTroopsValue, 3, 4);
+    divisionStatusLayout->addWidget(divMembersLabel, 4, 3);
+    divisionStatusLayout->addWidget(divMembersValue, 4, 4);
+    divisionStatusLayout->addWidget(divCaptivesLabel, 5, 3);
+    divisionStatusLayout->addWidget(divCaptivesValue, 5, 4);
+
+    divisionStatusLayout->setColumnMinimumWidth(2, 30);
+    divisionGroupBox->setLayout(divisionStatusLayout);
+
+    locationLayout->addWidget(locFixedGroupBox, 0, 0);
+    locationLayout->addWidget(divisionGroupBox, 1, 0);
+    locationLayout->setVerticalSpacing(1);
+
+    locationLayout->setRowStretch(1000, 1000);
+    locationLayout->setColumnStretch(1000, 1000);
+    locationGroupBox->setLayout(locationLayout);
+    bottomLayout->addWidget(locationGroupBox, 0, 1);
+
+//unknowns area
+    nActionEditBox   = new QLineEdit();
+    bActionEditBox   = new QLineEdit();
+    btlActionEditBox = new QLineEdit();
+    moralEditBox     = new QLineEdit();
+    warlikeEditBox   = new QLineEdit();
+    negoEditBox      = new QLineEdit();
+    atkPlusEditBox   = new QLineEdit();
+    defPlusEditBox   = new QLineEdit();
+
+    unknownsLayout->addWidget(new QLabel("n_action"), 0, 0);
+    unknownsLayout->addWidget(nActionEditBox, 0, 1);
+    unknownsLayout->addWidget(new QLabel(tr("b_action")), 1, 0);
+    unknownsLayout->addWidget(bActionEditBox, 1, 1);
+    unknownsLayout->addWidget(new QLabel(tr("btl_action")), 2, 0);
+    unknownsLayout->addWidget(btlActionEditBox, 2, 1);
+    unknownsLayout->addWidget(new QLabel(tr("moral")), 3, 0);
+    unknownsLayout->addWidget(moralEditBox, 3, 1);
+    unknownsLayout->addWidget(new QLabel(tr("warlike")), 4, 0);
+    unknownsLayout->addWidget(warlikeEditBox, 4, 1);
+    unknownsLayout->addWidget(new QLabel(tr("nego")), 5, 0);
+    unknownsLayout->addWidget(negoEditBox, 5, 1);
+    unknownsLayout->addWidget(new QLabel(tr("atkplus")), 6, 0);
+    unknownsLayout->addWidget(atkPlusEditBox, 6, 1);
+    unknownsLayout->addWidget(new QLabel(tr("defplus")), 7, 0);
+    unknownsLayout->addWidget(defPlusEditBox, 7, 1);
+
+    unknownsLayout->setRowStretch(1000, 1000);
+    unknownsLayout->setColumnStretch(1000, 1000);
+    unknownsGroupBox->setLayout(unknownsLayout);
+    bottomLayout->addWidget(unknownsGroupBox, 0, 2);
 }
 
 GeneralsTab::~GeneralsTab()
