@@ -14,7 +14,8 @@ private:
       int    listIndex;
       int    isPlayerMonarch;
       string name;
-      string owner;
+      string ownerName;
+      int    ownerId;
       int    fieldStatus1;
       int    fieldStatus2;
       int    level;
@@ -98,7 +99,8 @@ public:
     int    getListIndex      (void) const {return listIndex;}
     bool   isPlayer          (void) const {return isPlayerMonarch;}
     string getName           (void) const {return name;}
-    string getOwner          (void) const {return owner;}
+    string getOwnerName      (void) const {return ownerName;}
+    int    getOwnerId        (void) const {return ownerId;}
     int    getFieldStatus1   (void) const {return fieldStatus1;}
     int    getFieldStatus2   (void) const {return fieldStatus2;}
     int    getLevel          (void) const {return level;}

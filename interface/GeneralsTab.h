@@ -1,7 +1,6 @@
 #ifndef GENERALSTAB_H
 #define GENERALSTAB_H
 
-//#include "DFeditGUI.h"
 #include <QtWidgets>
 
 class GeneralsTab : public QWidget
@@ -10,7 +9,9 @@ class GeneralsTab : public QWidget
 
 public:
     explicit GeneralsTab(QWidget* parent = 0);
-             ~GeneralsTab();
+             ~GeneralsTab(void);
+
+    void loadGeneralsTab(int index = 0);
 
 private:
     void initComboBoxes (void);

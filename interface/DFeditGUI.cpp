@@ -3,6 +3,19 @@
 DFeditGUI::DFeditGUI(QString inFile, QWidget* parent)
     : QWidget(parent)
 {
+    if(!inFile.isEmpty()){
+        fileName = inFile;
+        dr.setFileName(inFile.toStdString());
+
+        dr.readFile();      //read the save file
+        dr.initGenerals();  //create the generals array
+        dr.setMonarch();    //find who the player's monarch is
+        dr.initCastles();   //create the castles array
+        dr.initDivisions(); //create the divisions array
+        dr.initItemInv();   //create the item inventory from domestic affairs
+        dr.initKingdoms();  //fill in the status of each kingdom
+    }
+
     generalsTab  = new GeneralsTab();
     castlesTab   = new CastlesTab();
     divisionsTab = new DivisionsTab();
@@ -21,18 +34,15 @@ DFeditGUI::DFeditGUI(QString inFile, QWidget* parent)
     layout = new QGridLayout(this);
     layout->addWidget(dfTab);
 
-    if(!inFile.isEmpty()){
-        fileName           = inFile;
-        dr.setFileName(inFile.toStdString());
-
-        dr.readFile();      //read the save file
-        dr.initGenerals();  //create the generals array
-        dr.setMonarch();    //find who the player's monarch is
-        dr.initCastles();   //create the castles array
-        dr.initDivisions(); //create the divisions array
-        dr.initItemInv();   //create the item inventory from domestic affairs
-        dr.initKingdoms();  //fill in the status of each kingdom
+    if(inFile.isEmpty()){
+        generalsTab->setVisible(false);
+        castlesTab->setVisible(false);
+        divisionsTab->setVisible(false);
+        massEditTab->setVisible(false);
+        itemsTab->setVisible(false);
+        kingdomsTab->setVisible(false);
     }
+
 }
 
 DFeditGUI::~DFeditGUI(void)

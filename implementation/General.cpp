@@ -5,7 +5,8 @@ General::General(int i)
     listIndex         = i;
     isPlayerMonarch   = (listIndex == dr.getPlayingAs()) ? 1 : 0;
     name              = generalsNameList[i];
-    owner             = generalsNameList[officerOwner[i]];
+    ownerName         = generalsNameList[officerOwner[i]];
+    ownerId           = officerOwner[i];
     fieldStatus1      = FsBuffer1[i];
     fieldStatus2      = FsBuffer2[i];
     level             = levelBuffer[i] + 1;
@@ -84,7 +85,8 @@ General::General(const General& rhsGen)
     listIndex         = rhsGen.listIndex;
     isPlayerMonarch   = rhsGen.isPlayerMonarch;
     name              = rhsGen.name;
-    owner             = rhsGen.owner;
+    ownerName         = rhsGen.ownerName;
+    ownerId           = rhsGen.ownerId;
     fieldStatus1      = rhsGen.fieldStatus1;
     fieldStatus2      = rhsGen.fieldStatus2;
     level             = rhsGen.level;
@@ -150,7 +152,8 @@ General& General::operator=(const General& rhsGen)
     listIndex         = rhsGen.listIndex;
     isPlayerMonarch   = rhsGen.isPlayerMonarch;
     name              = rhsGen.name;
-    owner             = rhsGen.owner;
+    ownerName         = rhsGen.ownerName;
+    ownerId           = rhsGen.ownerId;
     fieldStatus1      = rhsGen.fieldStatus1;
     fieldStatus2      = rhsGen.fieldStatus2;
     level             = rhsGen.level;
@@ -418,7 +421,8 @@ void General::setLocation(const int locType, const int newLoc)
 
 void General::setOwner(const int newOwner)
 {
-    owner                   = generalsNameList[newOwner];
+    ownerName               = generalsNameList[newOwner];
+    ownerId                 = newOwner;
     officerOwner[listIndex] = newOwner;
 //    dr.fw.writeOneElementToFile(GEN_OFFICER_OWNERSHIP, 1, newOwner, listIndex);
 

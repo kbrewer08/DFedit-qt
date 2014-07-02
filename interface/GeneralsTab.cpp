@@ -28,7 +28,7 @@ GeneralsTab::GeneralsTab(QWidget *parent)
 //basics area
     genNamesComboBox       = new QComboBox();
     ownerNamesComboBox     = new QComboBox();
-    levelEditBox           = new QLineEdit(); levelEditBox->setValidator(new QIntValidator(0, 50));
+    levelEditBox           = new QLineEdit(), levelEditBox->setValidator(new QIntValidator(0, 50));
     expEditBox             = new QLineEdit();
     currHpEditBox          = new QLineEdit();
     maxHpEditBox           = new QLineEdit();
@@ -410,6 +410,7 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     bottomLayout->addWidget(unknownsGroupBox, 0, 2);
 
     initComboBoxes();
+    loadGeneralsTab(7);
 }
 
 GeneralsTab::~GeneralsTab()
@@ -428,7 +429,7 @@ void GeneralsTab::initComboBoxes(void)
         spellTierComboBox->addItem(QString::number(i));
     }
 
-    for(int i = 0; i < 73; i++){
+    for(int i = 0; i < 48; i++){
         equippedItemComboBox->addItem(QString(itemList[i]));
     }
 
@@ -453,6 +454,39 @@ void GeneralsTab::initComboBoxes(void)
     hiddenLocComboBox->addItem(QString::fromStdString("No"));
     hiddenLocComboBox->addItem(QString::fromStdString("Site 62"));
     hiddenLocComboBox->addItem(QString::fromStdString("Site 127"));
+
+    return;
+}
+
+void GeneralsTab::loadGeneralsTab(int index)
+{
+    General gen = General(index);
+
+    ownerNamesComboBox->setCurrentIndex(gen.getOwnerId());
+    levelEditBox->setText(QString::number(gen.getLevel()));
+    expEditBox->setText(QString::number(gen.getCurrentExp()));
+    currHpEditBox->setText(QString::number(gen.getCurrentHP()));
+    maxHpEditBox->setText(QString::number(gen.getMaxHP()));
+    currMpEditBox->setText(QString::number(gen.getCurrentMP()));
+    maxMpEditBox->setText(QString::number(gen.getMaxMP()));
+    strEditBox->setText(QString::number(gen.getStrength()));
+    comEditBox->setText(QString::number(gen.getCommand()));
+    intEditBox->setText(QString::number((gen.getIntelligence() * 6) + 10));
+    livesEditBox->setText(QString::number(gen.getLivesLeft()));
+    loyaltyEditBox->setText(QString::number(gen.getLoyalty()));
+    winsEditBox->setText(QString::number(gen.getNewWins()));
+    lossesEditBox->setText(QString::number(gen.getNewLosses()));
+    meritsEditBox->setText(QString::number(gen.getNewMerits()));
+    escapeEditBox->setText(QString::number(gen.getEscapeChance()));
+    spellTierComboBox->setCurrentIndex(gen.getSpellTier());
+    equippedItemComboBox->setCurrentIndex(gen.getEquippedItem());
+    
+    if(gen.getDomesticsSF()){
+        searchFortifyCheckBox->setChecked(false);
+    }
+    else{
+        searchFortifyCheckBox->setChecked(true);
+    }
 
     return;
 }

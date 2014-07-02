@@ -1,7 +1,6 @@
 #ifndef ITEMSTAB_H
 #define ITEMSTAB_H
 
-//#include "DFeditGUI.h"
 #include <QtWidgets>
 
 class ItemsTab : public QWidget

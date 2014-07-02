@@ -1,7 +1,6 @@
 #ifndef CASTLESTAB_H
 #define CASTLESTAB_H
 
-//#include "DFeditGUI.h"
 #include <QtWidgets>
 
 class CastlesTab : public QWidget
