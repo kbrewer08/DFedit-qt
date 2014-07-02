@@ -28,7 +28,7 @@ GeneralsTab::GeneralsTab(QWidget *parent)
 //basics area
     genNamesComboBox       = new QComboBox();
     ownerNamesComboBox     = new QComboBox();
-    levelEditBox           = new QLineEdit();
+    levelEditBox           = new QLineEdit(); levelEditBox->setValidator(new QIntValidator(0, 50));
     expEditBox             = new QLineEdit();
     currHpEditBox          = new QLineEdit();
     maxHpEditBox           = new QLineEdit();
