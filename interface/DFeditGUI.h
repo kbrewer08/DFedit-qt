@@ -26,6 +26,13 @@ private:
     QTabWidget*  dfTab;
     QGridLayout* layout;
     QString      fileName;
+
+    GeneralsTab*  generalsTab;
+    CastlesTab*   castlesTab;
+    DivisionsTab* divisionsTab;
+    MassEditTab*  massEditTab;
+    KingdomsTab*  kingdomsTab;
+    ItemsTab*     itemsTab;
 };
 
 #endif // DFEDITGUI_H

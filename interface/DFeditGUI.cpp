@@ -3,13 +3,20 @@
 DFeditGUI::DFeditGUI(QString inFile, QWidget* parent)
     : QWidget(parent)
 {
+    generalsTab  = new GeneralsTab();
+    castlesTab   = new CastlesTab();
+    divisionsTab = new DivisionsTab();
+    massEditTab  = new MassEditTab();
+    itemsTab     = new ItemsTab();
+    kingdomsTab  = new KingdomsTab();
+
     dfTab = new QTabWidget;
-    dfTab->addTab(new GeneralsTab(),  tr("Generals"));
-    dfTab->addTab(new CastlesTab(),   tr("Castles"));
-    dfTab->addTab(new DivisionsTab(), tr("Divisions"));
-    dfTab->addTab(new MassEditTab(),  tr("Mass Editing"));
-    dfTab->addTab(new ItemsTab(),     tr("Items"));
-    dfTab->addTab(new KingdomsTab(),  tr("Kingdoms"));
+    dfTab->addTab(generalsTab,  tr("Generals"));
+    dfTab->addTab(castlesTab,   tr("Castles"));
+    dfTab->addTab(divisionsTab, tr("Divisions"));
+    dfTab->addTab(massEditTab,  tr("Mass Editing"));
+    dfTab->addTab(itemsTab,     tr("Items"));
+    dfTab->addTab(kingdomsTab,  tr("Kingdoms"));
 
     layout = new QGridLayout(this);
     layout->addWidget(dfTab);
@@ -35,5 +42,5 @@ DFeditGUI::~DFeditGUI(void)
 
 QString DFeditGUI::getPlayerName(void)
 {
-    return QString(dr.getPlayerName().c_str());
+    return QString(QString::fromStdString(dr.getPlayerName()));
 }

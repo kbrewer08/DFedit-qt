@@ -1,7 +1,8 @@
 #ifndef MASSEDITTAB_H
 #define MASSEDITTAB_H
 
-#include "DFeditGUI.h"
+//#include "DFeditGUI.h"
+#include <QtWidgets>
 
 class MassEditTab : public QWidget
 {

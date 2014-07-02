@@ -1,7 +1,8 @@
 #ifndef DIVISIONSTAB_H
 #define DIVISIONSTAB_H
 
-#include "DFeditGUI.h"
+//#include "DFeditGUI.h"
+#include <QtWidgets>
 
 class DivisionsTab : public QWidget
 {

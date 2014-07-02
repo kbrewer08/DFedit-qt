@@ -1,7 +1,8 @@
 #ifndef KINGDOMSTAB_H
 #define KINGDOMSTAB_H
 
-#include "DFeditGUI.h"
+//#include "DFeditGUI.h"
+#include <QtWidgets>
 
 class KingdomsTab : public QWidget
 {

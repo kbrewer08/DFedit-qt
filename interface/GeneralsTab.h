@@ -1,7 +1,8 @@
 #ifndef GENERALSTAB_H
 #define GENERALSTAB_H
 
-#include "DFeditGUI.h"
+//#include "DFeditGUI.h"
+#include <QtWidgets>
 
 class GeneralsTab : public QWidget
 {
