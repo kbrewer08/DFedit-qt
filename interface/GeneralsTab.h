@@ -11,10 +11,12 @@ public:
     explicit GeneralsTab(QWidget* parent = 0);
              ~GeneralsTab(void);
 
-    void loadGeneralsTab(int index = 0);
+    void loadGeneralsTabData(const int index = 0);
 
 private:
-    void initComboBoxes (void);
+    void initComboBoxes      (void);
+    void setLocationControls (const int index = 0);
+    void showDivisionInfo    (const bool show, const int index);
 
     QGroupBox* basicsGroupBox;
     QGroupBox* troopsGroupBox;

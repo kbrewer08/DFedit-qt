@@ -250,7 +250,7 @@ typedef struct //for Item Inventory
 
 class DragonForce
 {
-private:
+public:
     string drFileName;
     string playerName;
     int    playingAs;

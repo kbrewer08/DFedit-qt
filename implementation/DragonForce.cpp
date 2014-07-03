@@ -877,7 +877,7 @@ void DragonForce::initDivisions(void)
             {
                 divArr[division].addMember_init(genIndex);
                 if(genArr[i].getFieldStatus2() == 1)
-                    divArr[division].setLeader(genIndex);
+                    divArr[division].setLeaderId(genIndex);
             }
             if(genArr[i].getFieldStatus1() == 4)
                 divArr[division].addCaptive_init(genIndex);
@@ -887,6 +887,7 @@ void DragonForce::initDivisions(void)
 
             divArr[division].setRuler(officerOwner[i]);
             divArr[division].setStatus(divisionStatus[division]);
+            divArr[division].setStatusName(divisionStatus[division]);
             divArr[division].setDivNum(division);
             divArr[division].setOrigin(divisionOrigin[division]);
             divArr[division].setGoal(divisionDestination[division]);

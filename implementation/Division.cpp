@@ -3,7 +3,7 @@
 Division::Division(void)
 {
     ruler          = -1;
-    leader         = -1;
+    leaderId       = -1;
     status         = 0;
     divNum         = -1;
     hasPlayerRuler = false;
@@ -30,8 +30,10 @@ Division& Division::operator=(const Division& rhsDiv)
         return *this;
 
     ruler          = rhsDiv.ruler;
-    leader         = rhsDiv.leader;
+    leaderId       = rhsDiv.leaderId;
+    leaderName     = rhsDiv.leaderName;
     status         = rhsDiv.status;
+    statusName     = rhsDiv.statusName;
     divNum         = rhsDiv.divNum;
     hasPlayerRuler = rhsDiv.hasPlayerRuler;
     troopCount     = rhsDiv.troopCount;
@@ -53,11 +55,37 @@ Division& Division::operator=(const Division& rhsDiv)
     return *this;
 }
 
+Division::Division(const Division& rhsDiv)
+{
+    ruler          = rhsDiv.ruler;
+    leaderId       = rhsDiv.leaderId;
+    leaderName     = rhsDiv.leaderName;
+    status         = rhsDiv.status;
+    statusName     = rhsDiv.statusName;
+    divNum         = rhsDiv.divNum;
+    hasPlayerRuler = rhsDiv.hasPlayerRuler;
+    troopCount     = rhsDiv.troopCount;
+    numMembers     = rhsDiv.numMembers;
+    numCaptives    = rhsDiv.numCaptives;
+    
+    for(int i = 0; i < 5; i++)
+        members[i] = rhsDiv.members[i];
+    for(int j = 0; j < 171; j++)
+        captives[j] = rhsDiv.captives[j];
+    
+    origin      = rhsDiv.origin;
+    goal        = rhsDiv.goal;
+    prev        = rhsDiv.prev;
+    next        = rhsDiv.next;
+    xCoordinate = rhsDiv.xCoordinate;
+    yCoordinate = rhsDiv.yCoordinate;
+}
+
 ostream& operator<<(ostream& os, const Division& rhsDiv)
 {
     os << "Division #" << rhsDiv.divNum << endl;
     os << "     Ruler: " << generalsNameList[rhsDiv.ruler] << endl;
-    os << "     Leader: " << generalsNameList[rhsDiv.leader] << endl;
+    os << "     Leader: " << generalsNameList[rhsDiv.leaderId] << endl;
     os << "     Status: " << shidanStatus[rhsDiv.status] << endl << "     ";
     os << rhsDiv.numMembers << ' ' << rhsDiv.numCaptives << ' ';
     os << rhsDiv.troopCount << endl << "     ";
@@ -114,7 +142,7 @@ int Division::findRulerIndex(void)
 {
     int rulerIndex = -1;
 
-    if(leader == ruler) //division has ruler
+    if(leaderId == ruler) //division has ruler
         for(int i = 0; i < numMembers; i++)
             if(members[i] == ruler)
                 rulerIndex = i;
@@ -136,10 +164,10 @@ int Division::changeRuler(const int rulerIndex)
 
     newRulerPresent = false;
 
-    if((leader == dr.getPlayingAs()) && (leader != rulerIndex)) //if the player's monarch is in this division
+    if((leaderId == dr.getPlayingAs()) && (leaderId != rulerIndex)) //if the player's monarch is in this division
         return 0;                                          //then you can't change the ruler
     else
-        if((leader == dr.getPlayingAs()) && (leader == rulerIndex)) //if trying to change ruler to the player's monarch when
+        if((leaderId == dr.getPlayingAs()) && (leaderId == rulerIndex)) //if trying to change ruler to the player's monarch when
             return 1;                                          //they are already here, just return success right away
 
     newRuler = generalsNameList[rulerIndex];
@@ -159,10 +187,10 @@ int Division::changeRuler(const int rulerIndex)
     if(newRulerPresent) //if the new ruler of this division is also present in
     {                   //this division, then make them the leader
         //demote old leader
-        dr.genArr[leader].setStatus(3,0);
+        dr.genArr[leaderId].setStatus(3,0);
         //update data to reflect new leader
         dr.genArr[rulerIndex].setStatus(3,1);
-        leader = rulerIndex;
+        leaderId = rulerIndex;
 
         return 2;
     }
@@ -179,17 +207,17 @@ int Division::changeLeader(const int leaderIndex)
 {
     int newLeader = -1;
 
-    if(leader == ruler)
+    if(leaderId == ruler)
         return 0; //denied - division's ruler is present, so they must be leader
 
     //find the new leader in the array and get their internal general ID
     newLeader = dr.genArr[members[leaderIndex]].getListIndex();
 
     //demoting the current leader
-    dr.genArr[leader].setStatus(3,0);
+    dr.genArr[leaderId].setStatus(3,0);
 
     //promote new leader
-    leader = newLeader;
+    leaderId = newLeader;
     dr.genArr[newLeader].setStatus(3,1);
 
     return 1;
@@ -295,7 +323,7 @@ bool Division::delMultiGenFromList(int* const genBuff, const int genCount)
 
     for(int i = 0; i < gCount; i++)
     {
-        if(leader == genBuff[i]) //leader is being deleted, find another one later
+        if(leaderId == genBuff[i]) //leader is being deleted, find another one later
         {
             needLeader = true;
             i = gCount;
@@ -310,8 +338,8 @@ bool Division::delMultiGenFromList(int* const genBuff, const int genCount)
 
     if(numMembers && needLeader)
     {
-        leader = members[0];
-        dr.genArr[leader].setStatus(3,1);
+        leaderId = members[0];
+        dr.genArr[leaderId].setStatus(3,1);
     }
 
     if(!numMembers) //if no one left in division, clean division up as needed
@@ -440,7 +468,7 @@ int Division::fromGenToCap(int* const genBuff, const int genCount)
             needRuler = true; //ruler is being deleted, find another one later
             i = gCount; //if deleting ruler, we obviously don't need to check for leader
         }
-        if(leader == genBuff[i]) //leader is being deleted, find another one later
+        if(leaderId == genBuff[i]) //leader is being deleted, find another one later
         {
             needLeader = true;
             i = gCount;
@@ -461,8 +489,8 @@ int Division::fromGenToCap(int* const genBuff, const int genCount)
         ruler  = members[0];
         changeRuler(members[0]);
 
-        leader = members[0];
-        dr.genArr[leader].setStatus(3,2);
+        leaderId = members[0];
+        dr.genArr[leaderId].setStatus(3,2);
         needLeader = false;
 
         dr.findNewRulers(oldRuler);
@@ -470,8 +498,8 @@ int Division::fromGenToCap(int* const genBuff, const int genCount)
 
     if(needLeader)
     {
-        leader = members[0];
-        dr.genArr[leader].setStatus(3,2);
+        leaderId = members[0];
+        dr.genArr[leaderId].setStatus(3,2);
     }
 
     return success;
@@ -532,10 +560,10 @@ void Division::removeMember_a(const int genIndex)
             moveCaptivesToHold();
         }
 
-        if(leader == genIndex)
+        if(leaderId == genIndex)
         {
-            leader = members[0];
-            dr.genArr[leader].setStatus(3,1);
+            leaderId = members[0];
+            dr.genArr[leaderId].setStatus(3,1);
 
             activeArmies[divNum] = members[0];
 //            dr.fw.writeOneElementToFile(DIVISION_LIST, 1, members[0], divNum);
@@ -636,7 +664,7 @@ void Division::cleanCaptiveHolder(void)
 
 void Division::setDivisionEmpty(void)
 {
-    leader = -1;
+    leaderId = -1;
     ruler  = -1;
     status = 0;
     troopCount = 0;
@@ -703,5 +731,17 @@ void Division::setDivisionCoords(const int locNum)
 
     changeStatus(10); // "rest"
 
+    return;
+}
+
+void Division::setLeaderName(const int i)
+{
+    leaderName = generalsNameList[i];
+    return;
+}
+
+void Division::setStatusName(const int i)
+{
+    statusName = shidanStatus[i];
     return;
 }

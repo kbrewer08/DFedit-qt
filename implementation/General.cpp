@@ -9,15 +9,17 @@ General::General(int i)
     ownerId           = officerOwner[i];
     fieldStatus1      = FsBuffer1[i];
     fieldStatus2      = FsBuffer2[i];
+    status            = genStatusArray[fieldStatus1][fieldStatus2];
     level             = levelBuffer[i] + 1;
-    classType         = classBuffer[i];
+    classId           = classBuffer[i];
+    className         = classType[classId];
     if((locationNumBuff[i] >> 15) & 1)
         fixedLocation = 1; //meaning, they're not in an army
     else
         fixedLocation = 0; //they are part of an army
     location          = locationNumBuff[i] & 0x00FF; //only the low byte is important here
     troopIndex        = troopTypeBuff[i];
-    troopType         = troopType[troopTypeBuff[i]];
+    troopTypeName     = troopType[troopTypeBuff[i]];
     currentTroopCount = currTroopCountBuff[i];
     nAction           = nActionBuff[i];
     bAction           = bActionBuff[i];
@@ -89,12 +91,14 @@ General::General(const General& rhsGen)
     ownerId           = rhsGen.ownerId;
     fieldStatus1      = rhsGen.fieldStatus1;
     fieldStatus2      = rhsGen.fieldStatus2;
+    status            = rhsGen.status;
     level             = rhsGen.level;
-    classType         = rhsGen.classType;
+    classId           = rhsGen.classId;
+    className         = rhsGen.className;
     fixedLocation     = rhsGen.fixedLocation;
     location          = rhsGen.location;
     troopIndex        = rhsGen.troopIndex;
-    troopType         = rhsGen.troopType;
+    troopTypeName     = rhsGen.troopTypeName;
     currentTroopCount = rhsGen.currentTroopCount;
     nAction           = rhsGen.nAction;
     bAction           = rhsGen.bAction;
@@ -156,12 +160,14 @@ General& General::operator=(const General& rhsGen)
     ownerId           = rhsGen.ownerId;
     fieldStatus1      = rhsGen.fieldStatus1;
     fieldStatus2      = rhsGen.fieldStatus2;
+    status            = rhsGen.status;
     level             = rhsGen.level;
-    classType         = rhsGen.classType;
+    classId           = rhsGen.classId;
+    className         = rhsGen.className;
     fixedLocation     = rhsGen.fixedLocation;
     location          = rhsGen.location;
     troopIndex        = rhsGen.troopIndex;
-    troopType         = rhsGen.troopType;
+    troopTypeName     = rhsGen.troopTypeName;
     currentTroopCount = rhsGen.currentTroopCount;
     nAction           = rhsGen.nAction;
     bAction           = rhsGen.bAction;
@@ -316,7 +322,7 @@ int General::editMedals(ushort newMedalCount, int troopTypeToChange, ushort* pac
         if(troopIndex == troopTypeToChange)
         {
             dr.writeOneElementToFile(GEN_TROOP_TYPE, 1, 0, listIndex);
-            troopType = troopType[0];
+            troopTypeName = troopType[0];
             troopIndex = 0;
             troopTypeBuff[listIndex] = 0;
         }
@@ -390,6 +396,8 @@ void General::setStatus(const int fs1, const int fs2)
 
     FsBuffer1[listIndex] = fs1;
     FsBuffer2[listIndex] = fs2;
+
+    status = genStatusArray[fs1][fs2];
 /*
     dr.fw.writeOneElementToFile(FIELD_STATUS_1, 1, fs1, listIndex);
     dr.fw.writeOneElementToFile(FIELD_STATUS_2, 1, fs2, listIndex);

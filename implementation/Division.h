@@ -11,14 +11,16 @@ using namespace std;
 class Division
 {
 private:
-    int  ruler;
-    int  leader;
-    int  status;
-    int  divNum;
-    bool hasPlayerRuler;
-    int  numMembers;
-    int  numCaptives;
-    int  troopCount;
+    int    ruler;
+    int    leaderId;
+    string leaderName;
+    int    status;
+    string statusName;
+    int    divNum;
+    bool   hasPlayerRuler;
+    int    numMembers;
+    int    numCaptives;
+    int    troopCount;
 public:
     int  members[5];    //need solution to get/set
     int  captives[171]; //need solution to get/set
@@ -45,24 +47,28 @@ public:
 
     bool isDivisionFull (void) {return numMembers == 5;}
 
-    int  getRuler         (void) const {return ruler;}
-    int  getLeader        (void) const {return leader;}
-    int  getStatus        (void) const {return status;}
-    int  getDivNum        (void) const {return divNum;}
-    bool hasPlayerMonarch (void) const {return hasPlayerRuler;}
-    int  getNumMembers    (void) const {return numMembers;}
-    int  getNumCaptives   (void) const {return numCaptives;}
-    int  getTroopCount    (void) const {return troopCount;}
-    int  getOrigin        (void) const {return origin;}
-    int  getGoal          (void) const {return goal;}
-    int  getPrev          (void) const {return prev;}
-    int  getNext          (void) const {return next;}
-    int  getXCoordinate   (void) const {return xCoordinate;}
-    int  getYCoordinate   (void) const {return yCoordinate;}
+    int    getRuler         (void) const {return ruler;}
+    int    getLeaderId      (void) const {return leaderId;}
+    string getLeaderName    (void) const {return leaderName;}
+    int    getStatus        (void) const {return status;}
+    string getStatusName    (void) const {return statusName;}
+    int    getDivNum        (void) const {return divNum;}
+    bool   hasPlayerMonarch (void) const {return hasPlayerRuler;}
+    int    getNumMembers    (void) const {return numMembers;}
+    int    getNumCaptives   (void) const {return numCaptives;}
+    int    getTroopCount    (void) const {return troopCount;}
+    int    getOrigin        (void) const {return origin;}
+    int    getGoal          (void) const {return goal;}
+    int    getPrev          (void) const {return prev;}
+    int    getNext          (void) const {return next;}
+    int    getXCoordinate   (void) const {return xCoordinate;}
+    int    getYCoordinate   (void) const {return yCoordinate;}
 
     void setRuler       (const int i)  {ruler = i; return;}
-    void setLeader      (const int i)  {leader = i; return;}
+    void setLeaderId    (const int i)  {leaderId = i; return;}
+    void setLeaderName  (const int i);
     void setStatus      (const int i)  {status = i; return;}
+    void setStatusName  (const int i);
     void setDivNum      (const int i)  {divNum = i; return;}
     void setHasPlayer   (const bool i) {hasPlayerRuler = i; return;}
     void setTroopCount  (const int i)  {troopCount = i; return;}

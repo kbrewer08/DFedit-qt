@@ -18,12 +18,14 @@ private:
       int    ownerId;
       int    fieldStatus1;
       int    fieldStatus2;
+      string status;
       int    level;
-      int    classType;
+      int    classId;
+      string className;
       int    fixedLocation; //  true/false  1/0
       int    location;
       int    troopIndex;
-      string troopType;
+      string troopTypeName;
       int    currentTroopCount;
       int    nAction;
       int    bAction;
@@ -103,12 +105,14 @@ public:
     int    getOwnerId        (void) const {return ownerId;}
     int    getFieldStatus1   (void) const {return fieldStatus1;}
     int    getFieldStatus2   (void) const {return fieldStatus2;}
+    string getStatus         (void) const {return status;}
     int    getLevel          (void) const {return level;}
-    int    getClassType      (void) const {return classType;}
+    int    getClassId        (void) const {return classId;}
+    string getClassName      (void) const {return className;}
     int    getFixedLocation  (void) const {return fixedLocation;}
     int    getLocation       (void) const {return location;}
     int    getTroopIndex     (void) const {return troopIndex;}
-    string getTroopType      (void) const {return troopType;}
+    string getTroopType      (void) const {return troopTypeName;}
     int    getCurrTroopCount (void) const {return currentTroopCount;}
     int    getNAction        (void) const {return nAction;}
     int    getBAction        (void) const {return bAction;}

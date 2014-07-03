@@ -410,7 +410,8 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     bottomLayout->addWidget(unknownsGroupBox, 0, 2);
 
     initComboBoxes();
-    loadGeneralsTab(7);
+    loadGeneralsTabData(13);
+    genNamesComboBox->setCurrentIndex(13);
 }
 
 GeneralsTab::~GeneralsTab()
@@ -458,9 +459,9 @@ void GeneralsTab::initComboBoxes(void)
     return;
 }
 
-void GeneralsTab::loadGeneralsTab(int index)
+void GeneralsTab::loadGeneralsTabData(const int index)
 {
-    General gen = General(index);
+    const General gen = General(index);
 
     ownerNamesComboBox->setCurrentIndex(gen.getOwnerId());
     levelEditBox->setText(QString::number(gen.getLevel()));
@@ -486,6 +487,139 @@ void GeneralsTab::loadGeneralsTab(int index)
     }
     else{
         searchFortifyCheckBox->setChecked(true);
+    }
+
+    troopWeakEditBox->setText(QString::number(gen.getDefp()));
+    swordWeakEditBox->setText(QString::number(gen.getDefSword()));
+    iceWeakEditBox->setText(QString::number(gen.getDefIce()));
+    fireWeakEditBox->setText(QString::number(gen.getDefFire()));
+    lightWeakEditBox->setText(QString::number(gen.getDefLight()));
+    darkWeakEditBox->setText(QString::number(gen.getDefDark()));
+    troopTypeComboBox->setCurrentIndex(gen.getTroopIndex());
+    troopAmountEditBox->setText(QString::number(gen.getCurrTroopCount()));
+    soldierMedalsComboBox->setCurrentIndex(gen.troopMedals[1]);
+    cavalryMedalsComboBox->setCurrentIndex(gen.troopMedals[2]);
+    mageMedalsComboBox->setCurrentIndex(gen.troopMedals[3]);
+    samuraiMedalsComboBox->setCurrentIndex(gen.troopMedals[4]);
+    archerMedalsComboBox->setCurrentIndex(gen.troopMedals[5]);
+    monkMedalsComboBox->setCurrentIndex(gen.troopMedals[6]);
+    harpyMedalsComboBox->setCurrentIndex(gen.troopMedals[7]);
+    beastMedalsComboBox->setCurrentIndex(gen.troopMedals[8]);
+    dragonMedalsComboBox->setCurrentIndex(gen.troopMedals[9]);
+    zombieMedalsComboBox->setCurrentIndex(gen.troopMedals[10]);
+
+    nActionEditBox->setText(QString::number(gen.getNAction()));
+    bActionEditBox->setText(QString::number(gen.getBAction()));
+    btlActionEditBox->setText(QString::number(gen.getBtlAction()));
+    moralEditBox->setText(QString::number(gen.getMoral()));
+    warlikeEditBox->setText(QString::number(gen.getWarlike()));
+    negoEditBox->setText(QString::number(gen.getNego()));
+    atkPlusEditBox->setText(QString::number(gen.getAtkPlus()));
+    defPlusEditBox->setText(QString::number(gen.getDefPlus()));
+
+    indexValue->setText(QString::number(gen.getListIndex()));
+    portraitValue->setText(QString::number(gen.getPortrait()));
+    classValue->setText(QString::fromStdString(gen.getClassName()));
+    statusValue->setText(QString::fromStdString(gen.getStatus()));
+    if(gen.getHospital()){
+        hospitalValue->setText("Yes");
+    }
+    else{
+        hospitalValue->setText("No");
+    }
+
+    setLocationControls(index);
+    
+    return;
+}
+
+void GeneralsTab::setLocationControls(const int index)
+{
+    General gen   = General(index);
+    bool fixedLoc = gen.getFixedLocation();
+    int  location = gen.getLocation();
+
+    bool castle   = fixedLoc && (location < 34);
+    bool hidden   = fixedLoc && (location >= 34);
+    bool division = !fixedLoc;
+
+    if(castle){
+        castleLocRadioButton->setChecked(true);
+        castleLocComboBox->setCurrentIndex(location);
+        castleLocComboBox->setEnabled(true);
+        castleLocSetButton->setEnabled(true);
+
+        hiddenLocComboBox->setCurrentIndex(0);
+        hiddenLocComboBox->setEnabled(false);
+        hiddenLocSetButton->setEnabled(false);
+        showDivisionInfo(false, index);
+    }
+
+    if(hidden){
+        hiddenLocRadioButton->setChecked(true);
+        hiddenLocComboBox->setEnabled(true);
+        hiddenLocSetButton->setEnabled(true);
+
+        if(location == 62){
+            hiddenLocComboBox->setCurrentIndex(1);
+        }
+        if(location == 127){
+            hiddenLocComboBox->setCurrentIndex(2);
+        }
+
+        castleLocComboBox->setCurrentIndex(34);
+        castleLocComboBox->setEnabled(false);
+        castleLocSetButton->setEnabled(false);
+        showDivisionInfo(false, index);
+    }
+
+    if(division){
+        divisionLocRadioButton->setChecked(true);
+
+        castleLocComboBox->setCurrentIndex(34);
+        castleLocComboBox->setEnabled(false);
+        castleLocSetButton->setEnabled(false);
+
+        hiddenLocComboBox->setCurrentIndex(0);
+        hiddenLocComboBox->setEnabled(false);
+        hiddenLocSetButton->setEnabled(false);
+        showDivisionInfo(true, index);
+    }
+
+    return;
+}
+
+void GeneralsTab::showDivisionInfo(const bool show, const int index)
+{
+    General  gen = General(index);
+    Division div = dr.divArr[gen.getLocation()];
+
+    if(show){
+        divisionGroupBox->setVisible(true);
+        divRulerValue->setText(QString::fromStdString(gen.getOwnerName()));
+        divLeaderValue->setText(QString::fromStdString(div.getLeaderName()));
+        divXValue->setText(QString::number(div.getXCoordinate()));
+        divYValue->setText(QString::number(div.getYCoordinate()));
+        divOriginValue->setText(QString::fromStdString(locationList[div.getOrigin()]));
+
+        if(div.getGoal() == 255){
+            divGoalValue->setText(QString::fromStdString(dr.getPlayerName()));
+        }
+        else{
+            divGoalValue->setText(QString::fromStdString(locationList[div.getGoal()]));
+        }
+
+        divPrevValue->setText(QString::fromStdString(locationList[div.getPrev()]));
+        divNextValue->setText(QString::fromStdString(locationList[div.getNext()]));
+        divNumberValue->setText(QString::number(div.getDivNum()));
+        divStatusValue->setText(QString::fromStdString(div.getStatusName()));
+        divTroopsValue->setText(QString::number(div.getTroopCount()));
+        divMembersValue->setText(QString::number(div.getNumMembers()));
+        divCaptivesValue->setText(QString::number(div.getNumCaptives()));
+    }
+
+    if(!show){
+        divisionGroupBox->setVisible(false);
     }
 
     return;
