@@ -13,6 +13,7 @@ public:
     explicit GeneralsTab(DragonForce* df, QWidget* parent = 0);
              ~GeneralsTab(void);
 
+private slots:
     void loadGeneralsTabData(const int index = 0);
 
 private:

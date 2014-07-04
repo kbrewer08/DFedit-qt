@@ -33,8 +33,8 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     unknownsGroupBox   = new QGroupBox(tr("Unknown Effects"));
 
 //basics area
-    genNamesComboBox       = new QComboBox();
-    ownerNamesComboBox     = new QComboBox();
+    genNamesComboBox       = new QComboBox(); genNamesComboBox->setFixedWidth(85);
+    ownerNamesComboBox     = new QComboBox(); ownerNamesComboBox->setFixedWidth(85);
     levelEditBox           = new QLineEdit(), levelEditBox->setValidator(new QIntValidator(0, 50));
     expEditBox             = new QLineEdit(); expEditBox->setValidator(new QIntValidator(0, 65535));
     currHpEditBox          = new QLineEdit(); currHpEditBox->setValidator(new QIntValidator(1, 127));
@@ -50,9 +50,25 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     lossesEditBox          = new QLineEdit(); lossesEditBox->setValidator(new QIntValidator(0, 9999));
     meritsEditBox          = new QLineEdit(); meritsEditBox->setValidator(new QIntValidator(0, 9999));
     escapeEditBox          = new QLineEdit(); escapeEditBox->setValidator(new QIntValidator(0, 255));
-    spellTierComboBox      = new QComboBox();
-    equippedItemComboBox   = new QComboBox();
+    spellTierComboBox      = new QComboBox(); spellTierComboBox->setFixedWidth(120);
+    equippedItemComboBox   = new QComboBox(); equippedItemComboBox->setFixedWidth(120);
     searchFortifyCheckBox  = new QCheckBox(tr("Searched/Fortified"));
+
+    levelEditBox->setFixedWidth(85);
+    expEditBox->setFixedWidth(85);
+    currHpEditBox->setFixedWidth(85);
+    maxHpEditBox->setFixedWidth(85);
+    currMpEditBox->setFixedWidth(85);
+    maxMpEditBox->setFixedWidth(85);
+    strEditBox->setFixedWidth(85);
+    comEditBox->setFixedWidth(85);
+    intEditBox->setFixedWidth(85);
+    livesEditBox->setFixedWidth(120);
+    loyaltyEditBox->setFixedWidth(120);
+    winsEditBox->setFixedWidth(120);
+    lossesEditBox->setFixedWidth(120);
+    meritsEditBox->setFixedWidth(120);
+    escapeEditBox->setFixedWidth(120);
 
     ownerSetButton         = new QPushButton(tr("Set"));
     levelSetButton         = new QPushButton(tr("Set"));
@@ -73,6 +89,26 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     spellTierSetButton     = new QPushButton(tr("Set"));
     equippedItemSetButton  = new QPushButton(tr("Set"));
     searchFortifySetButton = new QPushButton(tr("Set"));
+
+    ownerSetButton->setFixedWidth(45);
+    levelSetButton->setFixedWidth(45);
+    expSetButton->setFixedWidth(45);
+    currHpSetButton->setFixedWidth(45);
+    maxHpSetButton->setFixedWidth(45);
+    currMpSetButton->setFixedWidth(45);
+    maxMpSetButton->setFixedWidth(45);
+    strSetButton->setFixedWidth(45);
+    comSetButton->setFixedWidth(45);
+    intSetButton->setFixedWidth(45);
+    livesSetButton->setFixedWidth(45);
+    loyaltySetButton->setFixedWidth(45);
+    winsSetButton->setFixedWidth(45);
+    lossesSetButton->setFixedWidth(45);
+    meritsSetButton->setFixedWidth(45);
+    escapeSetButton->setFixedWidth(45);
+    spellTierSetButton->setFixedWidth(45);
+    equippedItemSetButton->setFixedWidth(45);
+    searchFortifySetButton->setFixedWidth(45);
 
     basicsLayout->addWidget(new QLabel("General"), 0, 0);
     basicsLayout->addWidget(genNamesComboBox, 0, 1);
@@ -147,7 +183,12 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     fireWeakEditBox  = new QLineEdit(); fireWeakEditBox->setValidator(new QIntValidator(0, 65535));
     lightWeakEditBox = new QLineEdit(); lightWeakEditBox->setValidator(new QIntValidator(0, 65535));
     darkWeakEditBox  = new QLineEdit(); darkWeakEditBox->setValidator(new QIntValidator(0, 65535));
-    troopWeakEditBox->setMinimumWidth(50);
+    troopWeakEditBox->setFixedWidth(45);
+    swordWeakEditBox->setFixedWidth(45);
+    iceWeakEditBox->setFixedWidth(45);
+    fireWeakEditBox->setFixedWidth(45);
+    lightWeakEditBox->setFixedWidth(45);
+    darkWeakEditBox->setFixedWidth(45);
 
     troopAttackSetButton = new QPushButton(tr("Set"));
     swordMagicSetButton  = new QPushButton(tr("Set"));
@@ -155,6 +196,12 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     fireMagicSetButton   = new QPushButton(tr("Set"));
     lightMagicSetButton  = new QPushButton(tr("Set"));
     darkMagicSetButton   = new QPushButton(tr("Set"));
+    troopAttackSetButton->setFixedWidth(45);
+    swordMagicSetButton->setFixedWidth(45);
+    iceMagicSetButton->setFixedWidth(45);
+    fireMagicSetButton->setFixedWidth(45);
+    lightMagicSetButton->setFixedWidth(45);
+    darkMagicSetButton->setFixedWidth(45);
 
     weaknessLayout->addWidget(new QLabel("Troop Attacks"), 0, 0);
     weaknessLayout->addWidget(troopWeakEditBox, 0, 1);
@@ -204,19 +251,19 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     topLayout->addWidget(statusGroupBox, 0, 2);
 
 //troops area
-    troopTypeComboBox     = new QComboBox();
+    troopTypeComboBox     = new QComboBox(); troopTypeComboBox->setFixedWidth(70);
  //because the max value is variable, validator will be set in loadGeneralsTabData
-    troopAmountEditBox    = new QLineEdit();
-    soldierMedalsComboBox = new QComboBox();
-    cavalryMedalsComboBox = new QComboBox();
-    mageMedalsComboBox    = new QComboBox();
-    samuraiMedalsComboBox = new QComboBox();
-    archerMedalsComboBox  = new QComboBox();
-    monkMedalsComboBox    = new QComboBox();
-    harpyMedalsComboBox   = new QComboBox();
-    beastMedalsComboBox   = new QComboBox();
-    dragonMedalsComboBox  = new QComboBox();
-    zombieMedalsComboBox  = new QComboBox();
+    troopAmountEditBox    = new QLineEdit(); troopAmountEditBox->setFixedWidth(70);
+    soldierMedalsComboBox = new QComboBox(); soldierMedalsComboBox->setFixedWidth(70);
+    cavalryMedalsComboBox = new QComboBox(); cavalryMedalsComboBox->setFixedWidth(70);
+    mageMedalsComboBox    = new QComboBox(); mageMedalsComboBox->setFixedWidth(70);
+    samuraiMedalsComboBox = new QComboBox(); samuraiMedalsComboBox->setFixedWidth(70);
+    archerMedalsComboBox  = new QComboBox(); archerMedalsComboBox->setFixedWidth(70);
+    monkMedalsComboBox    = new QComboBox(); monkMedalsComboBox->setFixedWidth(70);
+    harpyMedalsComboBox   = new QComboBox(); harpyMedalsComboBox->setFixedWidth(70);
+    beastMedalsComboBox   = new QComboBox(); beastMedalsComboBox->setFixedWidth(70);
+    dragonMedalsComboBox  = new QComboBox(); dragonMedalsComboBox->setFixedWidth(70);
+    zombieMedalsComboBox  = new QComboBox(); zombieMedalsComboBox->setFixedWidth(70);
 
     troopTypeSetButton     = new QPushButton(tr("Set"));
     troopAmountSetButton   = new QPushButton(tr("Set"));
@@ -230,6 +277,19 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     beastMedalsSetButton   = new QPushButton(tr("Set"));
     dragonMedalsSetButton  = new QPushButton(tr("Set"));
     zombieMedalsSetButton  = new QPushButton(tr("Set"));
+
+    troopTypeSetButton->setFixedWidth(45);
+    troopAmountSetButton->setFixedWidth(45);
+    soldierMedalsSetButton->setFixedWidth(45);
+    cavalryMedalsSetButton->setFixedWidth(45);
+    mageMedalsSetButton->setFixedWidth(45);
+    samuraiMedalsSetButton->setFixedWidth(45);
+    archerMedalsSetButton->setFixedWidth(45);
+    monkMedalsSetButton->setFixedWidth(45);
+    harpyMedalsSetButton->setFixedWidth(45);
+    beastMedalsSetButton->setFixedWidth(45);
+    dragonMedalsSetButton->setFixedWidth(45);
+    zombieMedalsSetButton->setFixedWidth(45);
 
     troopsLayout->addWidget(new QLabel(tr("Troop Type")), 0, 0);
     troopsLayout->addWidget(troopTypeComboBox, 0, 1);
@@ -283,7 +343,8 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
 
     castleLocSetButton = new QPushButton(tr("Set"));
     hiddenLocSetButton = new QPushButton(tr("Set"));
-
+    castleLocSetButton->setFixedWidth(45);
+    hiddenLocSetButton->setFixedWidth(45);
 
     QButtonGroup* locationRadioGroup = new QButtonGroup();
     locationRadioGroup->addButton(castleLocRadioButton);
@@ -378,6 +439,14 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     negoEditBox      = new QLineEdit(); negoEditBox->setValidator(new QIntValidator(0, 65535));
     atkPlusEditBox   = new QLineEdit(); atkPlusEditBox->setValidator(new QIntValidator(0, 170));
     defPlusEditBox   = new QLineEdit(); defPlusEditBox->setValidator(new QIntValidator(0, 255));
+    nActionEditBox->setFixedWidth(45);
+    bActionEditBox->setFixedWidth(45);
+    btlActionEditBox->setFixedWidth(45);
+    moralEditBox->setFixedWidth(45);
+    warlikeEditBox->setFixedWidth(45);
+    negoEditBox->setFixedWidth(45);
+    atkPlusEditBox->setFixedWidth(45);
+    defPlusEditBox->setFixedWidth(45);
 
     nActionSetButton   = new QPushButton(tr("Set"));
     bActionSetButton   = new QPushButton(tr("Set"));
@@ -387,6 +456,15 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     negoSetButton      = new QPushButton(tr("Set"));
     atkPlusSetButton   = new QPushButton(tr("Set"));
     defPlusSetButton   = new QPushButton(tr("Set"));
+
+    nActionSetButton->setFixedWidth(45);
+    bActionSetButton->setFixedWidth(45);
+    btlActionSetButton->setFixedWidth(45);
+    moralSetButton->setFixedWidth(45);
+    warlikeSetButton->setFixedWidth(45);
+    negoSetButton->setFixedWidth(45);
+    atkPlusSetButton->setFixedWidth(45);
+    defPlusSetButton->setFixedWidth(45);
 
     unknownsLayout->addWidget(new QLabel("n_action"), 0, 0);
     unknownsLayout->addWidget(nActionEditBox, 0, 1);
@@ -418,10 +496,12 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     unknownsGroupBox->setLayout(unknownsLayout);
     bottomLayout->addWidget(unknownsGroupBox, 0, 2);
 
+    connect(genNamesComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(loadGeneralsTabData(int)));
+
     if(dr != NULL){
         initComboBoxes();
-        loadGeneralsTabData(13);
-        genNamesComboBox->setCurrentIndex(13);
+        loadGeneralsTabData();
+        genNamesComboBox->setCurrentIndex(0);
     }
 }
 
