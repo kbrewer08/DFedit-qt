@@ -15,7 +15,7 @@ class DFeditGUI : public QWidget
     Q_OBJECT
 
 public:
-    DFeditGUI(QString inFile, QWidget* parent = 0);
+    DFeditGUI(QMainWindow* mainWindow, QString inFile, QWidget* parent = 0);
     ~DFeditGUI(void);
 
     QString getPlayerName(void);

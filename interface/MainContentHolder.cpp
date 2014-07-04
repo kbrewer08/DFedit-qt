@@ -5,7 +5,7 @@ MainContentHolder::MainContentHolder(QWidget* parent)
     : QMainWindow(parent)
 {
     mainTab = new QTabWidget;
-    mainTab->addTab(new DFeditGUI(""), tr("No files open"));
+    mainTab->addTab(new DFeditGUI(this, ""), tr("No files open"));
     mainTab->setMovable(true);
     isBlank = true;
 
@@ -44,7 +44,7 @@ void MainContentHolder::addNewTab(QStringList inFiles)
                 mainTab->removeTab(0);
                 isBlank = false;
             }
-            DFeditGUI* dfe = new DFeditGUI(fileName);
+            DFeditGUI* dfe = new DFeditGUI(this, fileName);
             mainTab->addTab(dfe, tr(""));                                    //can't set tab name yet
             mainTab->setTabText(mainTab->count() - 1, dfe->getPlayerName()); //save file loaded, set tab name now
             mainTab->setCurrentIndex(mainTab->count() - 1);                  //select the new tab/file
@@ -119,7 +119,7 @@ void MainContentHolder::closeTab(int tabNumber)
 {
     mainTab->removeTab(tabNumber);
     if(!mainTab->count()){ //when last tab closed, reopen a blank one
-        mainTab->addTab(new DFeditGUI(""), tr("No files open"));
+        mainTab->addTab(new DFeditGUI(this, ""), tr("No files open"));
         mainTab->setTabsClosable(false);
         isBlank = true;
     }

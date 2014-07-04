@@ -1,6 +1,6 @@
 #include "DFeditGUI.h"
 
-DFeditGUI::DFeditGUI(QString inFile, QWidget* parent)
+DFeditGUI::DFeditGUI(QMainWindow* mainWindow, QString inFile, QWidget* parent)
     : QWidget(parent)
 {
     if(!inFile.isEmpty()){
@@ -24,6 +24,7 @@ DFeditGUI::DFeditGUI(QString inFile, QWidget* parent)
         massEditTab  = new MassEditTab();
         itemsTab     = new ItemsTab();
         kingdomsTab  = new KingdomsTab();
+        mainWindow->resize(900, 600);
     }
 
 
