@@ -141,12 +141,13 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     topLayout->addWidget(basicsGroupBox, 0, 0);
 
 //weaknesses area
-    troopWeakEditBox = new QLineEdit(); troopWeakEditBox->setMinimumWidth(50);
-    swordWeakEditBox = new QLineEdit();
-    iceWeakEditBox   = new QLineEdit();
-    fireWeakEditBox  = new QLineEdit();
-    lightWeakEditBox = new QLineEdit();
-    darkWeakEditBox  = new QLineEdit();
+    troopWeakEditBox = new QLineEdit(); troopWeakEditBox->setValidator(new QIntValidator(0, 255));
+    swordWeakEditBox = new QLineEdit(); swordWeakEditBox->setValidator(new QIntValidator(0, 65535));
+    iceWeakEditBox   = new QLineEdit(); iceWeakEditBox->setValidator(new QIntValidator(0, 65535));
+    fireWeakEditBox  = new QLineEdit(); fireWeakEditBox->setValidator(new QIntValidator(0, 65535));
+    lightWeakEditBox = new QLineEdit(); lightWeakEditBox->setValidator(new QIntValidator(0, 65535));
+    darkWeakEditBox  = new QLineEdit(); darkWeakEditBox->setValidator(new QIntValidator(0, 65535));
+    troopWeakEditBox->setMinimumWidth(50);
 
     troopAttackSetButton = new QPushButton(tr("Set"));
     swordMagicSetButton  = new QPushButton(tr("Set"));
@@ -204,6 +205,7 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
 
 //troops area
     troopTypeComboBox     = new QComboBox();
+ //because the max value is variable, validator will be set in loadGeneralsTabData
     troopAmountEditBox    = new QLineEdit();
     soldierMedalsComboBox = new QComboBox();
     cavalryMedalsComboBox = new QComboBox();
@@ -368,14 +370,14 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     bottomLayout->addWidget(locationGroupBox, 0, 1);
 
 //unknowns area
-    nActionEditBox   = new QLineEdit();
-    bActionEditBox   = new QLineEdit();
-    btlActionEditBox = new QLineEdit();
-    moralEditBox     = new QLineEdit();
-    warlikeEditBox   = new QLineEdit();
-    negoEditBox      = new QLineEdit();
-    atkPlusEditBox   = new QLineEdit();
-    defPlusEditBox   = new QLineEdit();
+    nActionEditBox   = new QLineEdit(); nActionEditBox->setValidator(new QIntValidator(0, 255));
+    bActionEditBox   = new QLineEdit(); bActionEditBox->setValidator(new QIntValidator(0, 255));
+    btlActionEditBox = new QLineEdit(); btlActionEditBox->setValidator(new QIntValidator(0, 255));
+    moralEditBox     = new QLineEdit(); moralEditBox->setValidator(new QIntValidator(0, 255));
+    warlikeEditBox   = new QLineEdit(); warlikeEditBox->setValidator(new QIntValidator(0, 255));
+    negoEditBox      = new QLineEdit(); negoEditBox->setValidator(new QIntValidator(0, 65535));
+    atkPlusEditBox   = new QLineEdit(); atkPlusEditBox->setValidator(new QIntValidator(0, 170));
+    defPlusEditBox   = new QLineEdit(); defPlusEditBox->setValidator(new QIntValidator(0, 255));
 
     nActionSetButton   = new QPushButton(tr("Set"));
     bActionSetButton   = new QPushButton(tr("Set"));
@@ -471,6 +473,9 @@ void GeneralsTab::initComboBoxes(void)
 void GeneralsTab::loadGeneralsTabData(const int index)
 {
     const General gen = General(index);
+    
+    int maxTroops = gen.troopMedals[gen.getTroopIndex()] * 10;
+    troopAmountEditBox->setValidator(new QIntValidator(0, maxTroops));
 
     ownerNamesComboBox->setCurrentIndex(gen.getOwnerId());
     levelEditBox->setText(QString::number(gen.getLevel()));
@@ -490,7 +495,7 @@ void GeneralsTab::loadGeneralsTabData(const int index)
     escapeEditBox->setText(QString::number(gen.getEscapeChance()));
     spellTierComboBox->setCurrentIndex(gen.getSpellTier());
     equippedItemComboBox->setCurrentIndex(gen.getEquippedItem());
-    
+
     if(gen.getDomesticsSF()){
         searchFortifyCheckBox->setChecked(false);
     }
