@@ -190,7 +190,8 @@ int Division::changeRuler(const int rulerIndex)
         dr.genArr[leaderId].setStatus(3,0);
         //update data to reflect new leader
         dr.genArr[rulerIndex].setStatus(3,1);
-        leaderId = rulerIndex;
+        leaderId   = rulerIndex;
+        leaderName = generalsNameList[leaderId];
 
         return 2;
     }
@@ -217,7 +218,8 @@ int Division::changeLeader(const int leaderIndex)
     dr.genArr[leaderId].setStatus(3,0);
 
     //promote new leader
-    leaderId = newLeader;
+    leaderId   = newLeader;
+    leaderName = generalsNameList[leaderId];
     dr.genArr[newLeader].setStatus(3,1);
 
     return 1;
@@ -338,7 +340,8 @@ bool Division::delMultiGenFromList(int* const genBuff, const int genCount)
 
     if(numMembers && needLeader)
     {
-        leaderId = members[0];
+        leaderId   = members[0];
+        leaderName = generalsNameList[leaderId];
         dr.genArr[leaderId].setStatus(3,1);
     }
 
@@ -489,7 +492,8 @@ int Division::fromGenToCap(int* const genBuff, const int genCount)
         ruler  = members[0];
         changeRuler(members[0]);
 
-        leaderId = members[0];
+        leaderId   = members[0];
+        leaderName = generalsNameList[leaderId];
         dr.genArr[leaderId].setStatus(3,2);
         needLeader = false;
 
@@ -498,7 +502,8 @@ int Division::fromGenToCap(int* const genBuff, const int genCount)
 
     if(needLeader)
     {
-        leaderId = members[0];
+        leaderId   = members[0];
+        leaderName = generalsNameList[leaderId];
         dr.genArr[leaderId].setStatus(3,2);
     }
 
@@ -562,7 +567,8 @@ void Division::removeMember_a(const int genIndex)
 
         if(leaderId == genIndex)
         {
-            leaderId = members[0];
+            leaderId   = members[0];
+            leaderName = generalsNameList[leaderId];
             dr.genArr[leaderId].setStatus(3,1);
 
             activeArmies[divNum] = members[0];
@@ -664,10 +670,11 @@ void Division::cleanCaptiveHolder(void)
 
 void Division::setDivisionEmpty(void)
 {
-    leaderId = -1;
-    ruler  = -1;
-    status = 0;
-    troopCount = 0;
+    leaderId       = -1;
+    leaderName     = "";
+    ruler          = -1;
+    status         = 0;
+    troopCount     = 0;
     hasPlayerRuler = 0;
 //    dr.fw.writeOneElementToFile(DIVISION_STATUS, 1, 0, divNum);
     activeDivisions[divNum] = 0;
