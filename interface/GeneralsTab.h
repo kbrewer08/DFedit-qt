@@ -2,6 +2,7 @@
 #define GENERALSTAB_H
 
 #include <QtWidgets>
+#include "implementation/DragonForce.h"
 
 class GeneralsTab : public QWidget
 {
@@ -9,6 +10,7 @@ class GeneralsTab : public QWidget
 
 public:
     explicit GeneralsTab(QWidget* parent = 0);
+    explicit GeneralsTab(DragonForce* df, QWidget* parent = 0);
              ~GeneralsTab(void);
 
     void loadGeneralsTabData(const int index = 0);
@@ -17,6 +19,8 @@ private:
     void initComboBoxes      (void);
     void setLocationControls (const int index = 0);
     void showDivisionInfo    (const bool show, const int index);
+
+    DragonForce* dr;
 
     QGroupBox* basicsGroupBox;
     QGroupBox* troopsGroupBox;

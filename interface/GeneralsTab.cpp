@@ -3,6 +3,13 @@
 GeneralsTab::GeneralsTab(QWidget *parent)
     : QWidget(parent)
 {
+}
+
+GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
+        :QWidget(parent)
+{
+    dr = df;
+
     QGridLayout* mainLayout     = new QGridLayout(this);
     QGridLayout* topLayout      = new QGridLayout();
     QGridLayout* bottomLayout   = new QGridLayout();
@@ -134,7 +141,7 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     topLayout->addWidget(basicsGroupBox, 0, 0);
 
 //weaknesses area
-    troopWeakEditBox = new QLineEdit();
+    troopWeakEditBox = new QLineEdit(); troopWeakEditBox->setMinimumWidth(50);
     swordWeakEditBox = new QLineEdit();
     iceWeakEditBox   = new QLineEdit();
     fireWeakEditBox  = new QLineEdit();
@@ -409,9 +416,11 @@ GeneralsTab::GeneralsTab(QWidget *parent)
     unknownsGroupBox->setLayout(unknownsLayout);
     bottomLayout->addWidget(unknownsGroupBox, 0, 2);
 
-    initComboBoxes();
-    loadGeneralsTabData(13);
-    genNamesComboBox->setCurrentIndex(13);
+    if(dr != NULL){
+        initComboBoxes();
+        loadGeneralsTabData(13);
+        genNamesComboBox->setCurrentIndex(13);
+    }
 }
 
 GeneralsTab::~GeneralsTab()
@@ -422,8 +431,8 @@ GeneralsTab::~GeneralsTab()
 void GeneralsTab::initComboBoxes(void)
 {
     for(int i = 0; i < 171; i++){
-        genNamesComboBox->addItem(QString::fromStdString(dr.getGeneralName(i)));
-        ownerNamesComboBox->addItem(QString::fromStdString(dr.getGeneralName(i)));
+        genNamesComboBox->addItem(QString::fromStdString(dr->getGeneralName(i)));
+        ownerNamesComboBox->addItem(QString::fromStdString(dr->getGeneralName(i)));
     }
 
     for(int i = 0; i < 4; i++){
@@ -592,7 +601,7 @@ void GeneralsTab::setLocationControls(const int index)
 void GeneralsTab::showDivisionInfo(const bool show, const int index)
 {
     General  gen = General(index);
-    Division div = dr.divArr[gen.getLocation()];
+    Division div = dr->divArr[gen.getLocation()];
 
     if(show){
         divisionGroupBox->setVisible(true);
@@ -603,7 +612,7 @@ void GeneralsTab::showDivisionInfo(const bool show, const int index)
         divOriginValue->setText(QString::fromStdString(locationList[div.getOrigin()]));
 
         if(div.getGoal() == 255){
-            divGoalValue->setText(QString::fromStdString(dr.getPlayerName()));
+            divGoalValue->setText(QString::fromStdString(dr->getPlayerName()));
         }
         else{
             divGoalValue->setText(QString::fromStdString(locationList[div.getGoal()]));

@@ -876,8 +876,10 @@ void DragonForce::initDivisions(void)
             if(genArr[i].getFieldStatus1() == 3)
             {
                 divArr[division].addMember_init(genIndex);
-                if(genArr[i].getFieldStatus2() == 1)
+                if(genArr[i].getFieldStatus2() == 1){
                     divArr[division].setLeaderId(genIndex);
+                    divArr[division].setLeaderName(genIndex);
+                }
             }
             if(genArr[i].getFieldStatus1() == 4)
                 divArr[division].addCaptive_init(genIndex);

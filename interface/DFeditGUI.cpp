@@ -14,14 +14,18 @@ DFeditGUI::DFeditGUI(QString inFile, QWidget* parent)
         dr.initDivisions(); //create the divisions array
         dr.initItemInv();   //create the item inventory from domestic affairs
         dr.initKingdoms();  //fill in the status of each kingdom
+
+        generalsTab  = new GeneralsTab(&dr);
+    }
+    else{
+        generalsTab  = new GeneralsTab();
+        castlesTab   = new CastlesTab();
+        divisionsTab = new DivisionsTab();
+        massEditTab  = new MassEditTab();
+        itemsTab     = new ItemsTab();
+        kingdomsTab  = new KingdomsTab();
     }
 
-    generalsTab  = new GeneralsTab();
-    castlesTab   = new CastlesTab();
-    divisionsTab = new DivisionsTab();
-    massEditTab  = new MassEditTab();
-    itemsTab     = new ItemsTab();
-    kingdomsTab  = new KingdomsTab();
 
     dfTab = new QTabWidget;
     dfTab->addTab(generalsTab,  tr("Generals"));
