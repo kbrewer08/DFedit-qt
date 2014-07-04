@@ -52,7 +52,7 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     escapeEditBox          = new QLineEdit(); escapeEditBox->setValidator(new QIntValidator(0, 255));
     spellTierComboBox      = new QComboBox(); spellTierComboBox->setFixedWidth(120);
     equippedItemComboBox   = new QComboBox(); equippedItemComboBox->setFixedWidth(120);
-    searchFortifyCheckBox  = new QCheckBox(tr("Searched/Fortified"));
+    searchFortifyCheckBox  = new QCheckBox(tr("Has searched/fortified this week"));
 
     levelEditBox->setFixedWidth(85);
     expEditBox->setFixedWidth(85);
@@ -167,7 +167,7 @@ GeneralsTab::GeneralsTab(DragonForce* df, QWidget *parent)
     basicsLayout->addWidget(new QLabel("Equipped Item"), 7, 4);
     basicsLayout->addWidget(equippedItemComboBox, 7, 5);
     basicsLayout->addWidget(equippedItemSetButton, 7, 6);
-    basicsLayout->addWidget(searchFortifyCheckBox, 8, 4);
+    basicsLayout->addWidget(searchFortifyCheckBox, 8, 4, 1, 2);
     basicsLayout->addWidget(searchFortifySetButton, 8, 6);
 
     basicsLayout->setRowStretch(1000, 1000);
