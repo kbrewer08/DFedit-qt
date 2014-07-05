@@ -17,9 +17,11 @@ private slots:
     void loadGeneralsTabData(const int index = 0);
 
 private:
-    void initComboBoxes      (void);
-    void setLocationControls (const int index = 0);
-    void showDivisionInfo    (const bool show, const int index);
+    void initComboBoxes             (void);
+    void setLocationControls        (const int index = 0);
+    void showDivisionInfo           (const bool show, const int index);
+    void createWidgetPointerVectors (void);
+    void setWidgetsFixedWidth       (std::vector<QWidget*>& widgetsVector, const int width);
 
     DragonForce* dr;
 
@@ -33,6 +35,10 @@ private:
     QGroupBox* unknownsGroupBox;
 
 //basics
+    std::vector<QWidget*> basics1Boxes;
+    std::vector<QWidget*> basics1Buttons;
+    std::vector<QWidget*> basics2Boxes;
+    std::vector<QWidget*> basics2Buttons;
     QComboBox* genNamesComboBox;
     QComboBox* ownerNamesComboBox;
     QLineEdit* levelEditBox;
@@ -75,6 +81,8 @@ private:
     QPushButton* searchFortifySetButton;
 
 //weaknesses
+    std::vector<QWidget*> weaknessBoxes;
+    std::vector<QWidget*> weaknessButtons;
     QLineEdit* troopWeakEditBox;
     QLineEdit* swordWeakEditBox;
     QLineEdit* iceWeakEditBox;
@@ -97,6 +105,8 @@ private:
     QLabel* hospitalValue;
 
 //troops
+    std::vector<QWidget*> troopsBoxes;
+    std::vector<QWidget*> troopsButtons;
     QComboBox* troopTypeComboBox;
     QLineEdit* troopAmountEditBox;
     QComboBox* soldierMedalsComboBox;
@@ -124,6 +134,8 @@ private:
     QPushButton* zombieMedalsSetButton;
 
 //location edit
+    std::vector<QWidget*> genLocBoxes;
+    std::vector<QWidget*> genLocButtons;
     QGridLayout*  divisionStatusLayout;
     QComboBox*    castleLocComboBox;
     QComboBox*    hiddenLocComboBox;
@@ -161,6 +173,8 @@ private:
     QPushButton* hiddenLocSetButton;
 
 //unknowns
+    std::vector<QWidget*> unknownsBoxes;
+    std::vector<QWidget*> unknownsButtons;
     QLineEdit* nActionEditBox;
     QLineEdit* bActionEditBox;
     QLineEdit* btlActionEditBox;
