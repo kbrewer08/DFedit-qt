@@ -30,11 +30,11 @@ DFeditGUI::DFeditGUI(QMainWindow* mainWindow, QString inFile, QWidget* parent)
 
     dfTab = new QTabWidget;
     dfTab->addTab(generalsTab,  tr("Generals"));
-    dfTab->addTab(castlesTab,   tr("Castles"));
-    dfTab->addTab(divisionsTab, tr("Divisions"));
-    dfTab->addTab(massEditTab,  tr("Mass Editing"));
-    dfTab->addTab(itemsTab,     tr("Items"));
-    dfTab->addTab(kingdomsTab,  tr("Kingdoms"));
+    //dfTab->addTab(castlesTab,   tr("Castles"));
+    //dfTab->addTab(divisionsTab, tr("Divisions"));
+    //dfTab->addTab(massEditTab,  tr("Mass Editing"));
+    //dfTab->addTab(itemsTab,     tr("Items"));
+    //dfTab->addTab(kingdomsTab,  tr("Kingdoms"));
 
     layout = new QGridLayout(this);
     layout->addWidget(dfTab);

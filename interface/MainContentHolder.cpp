@@ -89,7 +89,7 @@ QStringList MainContentHolder::openFile(void)
 {
     QStringList fileList = QFileDialog::getOpenFileNames(this,
                                                     tr("Open the SSF save file"),
-                                                    "", // <-- this empty string means no specific directory is selected to be shown by default
+                                                    "../SaveFiles", //show this directory by default
                                                     tr(".bin files (*.bin);;All files (*.*)"));
 
     addNewTab(fileList);
